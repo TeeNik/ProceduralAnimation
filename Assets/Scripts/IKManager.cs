@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class IKManager : MonoBehaviour
 {
+    public Transform Target;
+
     public List<RobotJoint> Joints;
     public float SamplingDistance;
+    public float DistanceThreshold;
     public float LearningRate;
+
+    void Update()
+    {
+    }
 
     public float DistanceFromTarget(Vector3 target, float[] angles)
     {
@@ -30,11 +37,20 @@ public class IKManager : MonoBehaviour
 
     public void InverseKinematics(Vector3 target, float[] angles)
     {
-        if(DistanceFromTarget(target, angles) < DistanceFromTarget())
+        if (DistanceFromTarget(target, angles) < DistanceThreshold)
+        {
+            return;
+        }
+
         for (int i = 0; i < Joints.Count; ++i)
         {
             float gradient = PartialGradient(target, angles, i);
             angles[i] -= LearningRate * gradient;
+
+            if (DistanceFromTarget(target, angles) < DistanceThreshold)
+            {
+                return;
+            }
         }
     }
 
