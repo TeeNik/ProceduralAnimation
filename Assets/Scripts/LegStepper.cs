@@ -12,7 +12,7 @@ public class LegStepper : MonoBehaviour
 
     public bool Moving { get; private set; }
 
-    void Update()
+    public void Move()
     {
         if (!Moving)
         {
@@ -26,6 +26,8 @@ public class LegStepper : MonoBehaviour
 
     IEnumerator MoveToHome()
     {
+        Moving = true;
+
         Quaternion startRot = transform.rotation;
         Vector3 startPoint = transform.position;
 

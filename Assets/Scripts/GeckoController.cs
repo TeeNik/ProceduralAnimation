@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,11 +20,36 @@ public class GeckoController : MonoBehaviour
     [SerializeField] float rightEyeMaxYRotation;
     [SerializeField] float rightEyeMinYRotation;
 
+    [SerializeField] LegStepper frontLeftLegStepper;
+    [SerializeField] LegStepper frontRightLegStepper;
+    [SerializeField] LegStepper backLeftLegStepper;
+    [SerializeField] LegStepper backRightLegStepper;
+
+    [SerializeField] float turnSpeed;
+    [SerializeField] float moveSpeed;
+
+    [SerializeField] float turnAcceleration;
+    [SerializeField] float moveAcceleration;
+
+    [SerializeField] float minDistToTarget;
+    [SerializeField] float maxDistToTarget;
+
+    [SerializeField] float maxAngleToTarget;
+
+    private Vector3 currentVelocity;
+    private float currentAngularVelocity;
+
+
+    void Awake()
+    {
+        StartCoroutine(LegTracking());
+    }
+
     void LateUpdate()
     {
+        RootMotionUpdate();
         HeadTracking();
         //EyesTracking();
-
     }
 
     void HeadTracking()
@@ -46,5 +72,65 @@ public class GeckoController : MonoBehaviour
             1 - Mathf.Exp(-eyeTrackingSpeed * Time.deltaTime));
         rightEyeBone.rotation = Quaternion.Slerp(rightEyeBone.rotation, targetEyeRotation,
             1 - Mathf.Exp(-eyeTrackingSpeed * Time.deltaTime));
+    }
+
+    void RootMotionUpdate()
+    {
+        Vector3 towardTarget = target.position - transform.position;
+        Vector3 towardTargetProjected = Vector3.ProjectOnPlane(towardTarget, transform.up);
+
+        float angleToTarget = Vector3.SignedAngle(transform.forward, towardTargetProjected, transform.up);
+        float targetAngularVelocity = 0;
+
+        if (Math.Abs(angleToTarget) > maxAngleToTarget)
+        {
+            targetAngularVelocity = angleToTarget > 0 ? turnSpeed : -turnSpeed;
+        }
+
+        currentAngularVelocity = Mathf.Lerp(currentAngularVelocity, targetAngularVelocity,
+            1 - Mathf.Exp(-turnAcceleration * Time.deltaTime));
+
+        transform.Rotate(0, Time.deltaTime * currentAngularVelocity, 0, Space.World);
+
+        Vector3 targetVelocity = Vector3.zero;
+        if (Mathf.Abs(angleToTarget) < 90)
+        {
+            float disToTarget = Vector3.Distance(transform.position, target.position);
+            if (disToTarget > maxDistToTarget)
+            {
+                targetVelocity = moveSpeed * towardTargetProjected.normalized;
+            }
+            else if (disToTarget < minDistToTarget)
+            {
+                targetVelocity = moveSpeed * -towardTargetProjected.normalized;
+            }
+        }
+
+        currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity,
+            1 - Mathf.Exp(-moveAcceleration * Time.deltaTime));
+
+        transform.position += currentVelocity * Time.deltaTime;
+    }
+
+    IEnumerator LegTracking()
+    {
+        while (true)
+        {
+            do
+            {
+                frontLeftLegStepper.Move();
+                backRightLegStepper.Move();
+                yield return null;
+            }
+            while (frontLeftLegStepper.Moving || backRightLegStepper.Moving);
+
+            do
+            {
+                frontRightLegStepper.Move();
+                backLeftLegStepper.Move();
+                yield return null;
+            }
+            while (frontRightLegStepper.Moving || backLeftLegStepper.Moving);
+        }
     }
 }
