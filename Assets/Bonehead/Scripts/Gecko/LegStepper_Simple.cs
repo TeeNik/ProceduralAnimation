@@ -14,6 +14,11 @@ public class LegStepper_Simple : MonoBehaviour
 
     public bool Moving;
 
+    void Update()
+    {
+        TryMove();
+    }
+
     public void TryMove()
     {
         if (Moving) return;
