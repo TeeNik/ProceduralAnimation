@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeshCreator : MonoBehaviour
 {
-	public static void CreateMesh(ref Mesh mesh, Vector3[] points, int resolution = 10, float thickness = 2)
+	public static void CreateMesh(ref Mesh mesh, Vector3[] points, int resolution = 10, float radius = 2)
 	{
 		List<Vector3> verts = new List<Vector3>();
 		List<int> triangles = new List<int>();
@@ -28,8 +28,81 @@ public class MeshCreator : MonoBehaviour
 			{
 				var angle = ((float)currentRes / resolution) * (Mathf.PI * 2.0f);
 
-				var x = Mathf.Sin(angle) * thickness;
-				var y = Mathf.Cos(angle) * thickness;
+				var sc = 1.0f - (float)s / (numCircles - 1);
+				sc = Mathf.Sqrt(sc);
+
+				var x = Mathf.Sin(angle) * radius * sc;
+				var y = Mathf.Cos(angle) * radius * sc;
+
+				var point = (norm * x) + (tangent * y) + centerPos;
+				verts.Add(point);
+
+				//! Adding the triangles
+				if (s < numCircles - 1)
+				{
+					int startIndex = resolution * s;
+					triangles.Add(startIndex + currentRes);
+					triangles.Add(startIndex + (currentRes + 1) % resolution);
+					triangles.Add(startIndex + currentRes + resolution);
+
+					triangles.Add(startIndex + (currentRes + 1) % resolution);
+					triangles.Add(startIndex + (currentRes + 1) % resolution + resolution);
+					triangles.Add(startIndex + currentRes + resolution);
+				}
+
+			}
+		}
+
+		if (mesh == null)
+		{
+			mesh = new Mesh();
+		}
+		else
+		{
+			mesh.Clear();
+		}
+
+		mesh.SetVertices(verts);
+		mesh.SetTriangles(triangles, 0);
+		mesh.RecalculateNormals();
+	}
+
+	public static void CreateConeMesh(ref Mesh mesh, Vector3[] points, int resolution = 10, float radius = 2)
+	{
+		if(points.Length < 2)
+        {
+			return;
+        }
+
+
+		List<Vector3> verts = new List<Vector3>();
+		List<int> triangles = new List<int>();
+
+		int numCircles = points.Length;
+
+		PathVertex[] v = CalcNormals(points);
+
+		var startPoint = points[0];
+		var endPoint = points[points.Length - 1];
+		var sqrLength = (endPoint - startPoint).sqrMagnitude;
+
+		for (int s = 0; s < numCircles; s++)
+		{
+			float segmentPercent = s / (numCircles - 1f);
+			Vector3 centerPos = points[s];
+
+			//Vector3 forward = (s == numCircles - 1) ? (points[s] - points[s - 1]).normalized : (points[s + 1] - points[s]).normalized;
+			//Vector3 norm = Vector3.Cross(forward, Vector3.forward).normalized;
+			Vector3 forward = v[s].tangent;
+			Vector3 norm = v[s].normal;
+			Vector3 tangent = Vector3.Cross(norm, forward).normalized;
+
+			for (int currentRes = 0; currentRes < resolution; currentRes++)
+			{
+				var angle = ((float)currentRes / resolution) * (Mathf.PI * 2.0f);
+
+				var x = Mathf.Sin(angle) * radius;
+				var y = Mathf.Cos(angle) * radius;
 
 				var point = (norm * x) + (tangent * y) + centerPos;
 				verts.Add(point);

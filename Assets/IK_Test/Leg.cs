@@ -8,13 +8,13 @@ public class Leg : MonoBehaviour
 
     void Start()
     {
-        Vector3[] points = new Vector3[4];
-        for (int i = 0; i < 4; ++i)
+        Vector3[] points = new Vector3[5];
+        for (int i = 0; i < 5; ++i)
         {
-            points[i] = new Vector3(0, i, 0);
+            points[i] = new Vector3(i, 0, 0);
         }
         Mesh mesh = new Mesh();
-        MeshCreator.CreateMesh(ref mesh, points);
+        MeshCreator.CreateMesh(ref mesh, points, 30, 1);
         MeshFilter.mesh = mesh;
     }
 }
