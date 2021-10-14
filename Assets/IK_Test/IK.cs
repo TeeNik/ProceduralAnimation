@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System;
 
 public class IK : MonoBehaviour
 {
@@ -22,6 +23,12 @@ public class IK : MonoBehaviour
     protected Transform[] Bones;
     protected Vector3[] Positions;
 
+    protected Vector3[] StartDirectionSucc;
+    protected Quaternion[] StartRotationBone;
+    protected Quaternion StartRotationTarget;
+    protected Quaternion StartRotationRoot;
+
+    public Action<Vector3[]> OnBonesUpdated;
 
     void Awake()
     {
@@ -34,18 +41,25 @@ public class IK : MonoBehaviour
         Positions = new Vector3[ChainLength + 1];
         BonesLength = new float[ChainLength];
 
+        StartDirectionSucc = new Vector3[ChainLength + 1];
+        StartRotationBone = new Quaternion[ChainLength + 1];
+        StartRotationTarget = Target.rotation;
+
         CompleteLength = 0.0f;
 
         var current = transform;
         for(int i = Bones.Length - 1; i >= 0; --i)
         {
             Bones[i] = current;
+            StartRotationBone[i] = current.rotation;
+
             if(i == Bones.Length - 1)
             {
-
+                StartDirectionSucc[i] = Target.position - current.position;
             }
             else
             {
+                StartDirectionSucc[i] = Bones[i + 1].position - current.position;
                 BonesLength[i] = (Bones[i + 1].position - current.position).magnitude;
                 CompleteLength += BonesLength[i];
             }
@@ -74,6 +88,9 @@ public class IK : MonoBehaviour
         {
             Positions[i] = Bones[i].position;
         }
+
+        var rootRot = (Bones[0].parent != null) ? Bones[0].parent.rotation : Quaternion.identity;
+        var rootRotDiff = rootRot * Quaternion.Inverse(StartRotationRoot);
 
         if((Target.position - Bones[0].position).sqrMagnitude >= CompleteLength * CompleteLength)
         {
@@ -127,6 +144,15 @@ public class IK : MonoBehaviour
         {
             Bones[i].position = Positions[i];
         }
+
+        List<Vector3> pos = new List<Vector3>();
+        foreach(var bone in Bones)
+        {
+            var transformedPos = Bones[0].transform.InverseTransformPoint(bone.position);
+            pos.Add(transformedPos);
+        }
+
+        OnBonesUpdated?.Invoke(pos.ToArray());
     }
 
     private void OnDrawGizmos()
