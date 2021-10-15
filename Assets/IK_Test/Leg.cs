@@ -6,10 +6,12 @@ public class Leg : MonoBehaviour
 {
     public MeshFilter MeshFilter;
     public IK IK;
+    public Movement Movement;
 
     void Start()
     {
-        IK.OnBonesUpdated = OnBonesUpdated;
+        //IK.OnBonesUpdated = OnBonesUpdated;
+        Movement.OnBonesUpdated = OnBonesUpdated;
         //Vector3[] points = new Vector3[5];
         //for (int i = 0; i < 5; ++i)
         //{

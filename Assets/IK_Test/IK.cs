@@ -145,14 +145,12 @@ public class IK : MonoBehaviour
             Bones[i].position = Positions[i];
         }
 
-        List<Vector3> pos = new List<Vector3>();
+        List<Vector3> localPositions = new List<Vector3>();
         foreach(var bone in Bones)
         {
-            var transformedPos = Bones[0].transform.InverseTransformPoint(bone.position);
-            pos.Add(transformedPos);
+            localPositions.Add(Bones[0].transform.InverseTransformPoint(bone.position));
         }
-
-        OnBonesUpdated?.Invoke(pos.ToArray());
+        OnBonesUpdated?.Invoke(localPositions.ToArray());
     }
 
     private void OnDrawGizmos()
