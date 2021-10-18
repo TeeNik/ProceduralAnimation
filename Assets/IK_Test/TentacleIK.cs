@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class RoboticMovement : MonoBehaviour
+
+public class TentacleIK : MonoBehaviour
 {
     [Header("Parameters")]
     public float SamplingDistance;
@@ -96,7 +97,7 @@ public class RoboticMovement : MonoBehaviour
     public void InverseKinematics(Vector3 target)
     {
         // Have we almost reached our target?
-        if (DistanceFromTarget(target) < DistanceThreshold)
+        if (ErrorFunction(target) < DistanceThreshold)
             return;
 
         for (int i = bonesCount - 1; i >= 0; i--)
@@ -106,7 +107,7 @@ public class RoboticMovement : MonoBehaviour
             angles[i] -= LearningRate * gradient;
             angles[i] = Mathf.Clamp(angles[i], joints[i].MinAngle, joints[i].MaxAngle);
 
-            if (DistanceFromTarget(target) < DistanceThreshold)
+            if (ErrorFunction(target) < DistanceThreshold)
                 return;
         }
     }
@@ -117,9 +118,9 @@ public class RoboticMovement : MonoBehaviour
         float angle = angles[i];
 
         // Calculate error function for current angle and angle + sampling distance
-        float f_x = DistanceFromTarget(target);
+        float f_x = ErrorFunction(target);
         angles[i] += SamplingDistance;
-        float f_xPlusSampligDistance = DistanceFromTarget(target);
+        float f_xPlusSampligDistance = ErrorFunction(target);
 
         // Gradient : [F(x + h) - F(x)] / h
         float gradient = (f_xPlusSampligDistance - f_x) / SamplingDistance;
@@ -130,10 +131,15 @@ public class RoboticMovement : MonoBehaviour
         return gradient;
     }
 
-    public float DistanceFromTarget(Vector3 target)
+    public float ErrorFunction(Vector3 target)
     {
         Vector3 point = ForwardKinematics();
-        return Vector3.Distance(point, target);
+        float distancePenalty = Vector3.Distance(target, point);
+
+        //float rotationPenalty = Mathf.Abs(Quaternion.Angle(joints[bonesCount - 1].transform.rotation, Target.rotation) / 180f);
+        float rotationPenalty = 0;
+
+        return distancePenalty + rotationPenalty;
     }
 
     public Vector3 ForwardKinematics()

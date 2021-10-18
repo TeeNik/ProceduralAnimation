@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System;
 
-public class IK : MonoBehaviour
+public class FabricIK : IKInterface
 {
 
     public int ChainLength = 2;
@@ -27,8 +27,6 @@ public class IK : MonoBehaviour
     protected Quaternion[] StartRotationBone;
     protected Quaternion StartRotationTarget;
     protected Quaternion StartRotationRoot;
-
-    public Action<Vector3[]> OnBonesUpdated;
 
     void Awake()
     {
