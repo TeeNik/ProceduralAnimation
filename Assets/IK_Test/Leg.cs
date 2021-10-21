@@ -24,7 +24,7 @@ public class Leg : MonoBehaviour
         }
 
         Mesh mesh = new Mesh();
-        MeshCreator.CreateMesh(ref mesh, pos.ToArray(), 30, 0.25f);
+        MeshCreator.CreateMesh(ref mesh, pos.ToArray(), 30, 0.1f);
         MeshFilter.mesh = mesh;
     }
 

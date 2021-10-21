@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 
-public class TentacleIK : MonoBehaviour
+public class TentacleIK : IKInterface
 {
     [Header("Parameters")]
     public float SamplingDistance;
@@ -25,8 +25,6 @@ public class TentacleIK : MonoBehaviour
     [SerializeField]
     float[] angles;
     Vector3[] axis;
-
-    public Action<Vector3[]> OnBonesUpdated;
 
     private void Start()
     {

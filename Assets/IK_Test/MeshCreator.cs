@@ -28,7 +28,7 @@ public class MeshCreator : MonoBehaviour
 			{
 				var angle = ((float)currentRes / resolution) * (Mathf.PI * 2.0f);
 
-				var sc = 1.0f - (float)s / (numCircles - 1);
+				var sc = 1.0f;// - (float)s / (numCircles - 1);
 				sc = Mathf.Sqrt(sc);
 
 				var x = Mathf.Sin(angle) * radius * sc;
