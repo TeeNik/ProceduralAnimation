@@ -12,11 +12,6 @@ public class LegStepper : MonoBehaviour
 
     public bool Moving { get; private set; }
 
-    private void LateUpdate()
-    {
-        Move();
-    }
-
     public void Move()
     {
         if (!Moving)
