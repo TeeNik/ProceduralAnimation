@@ -20,7 +20,7 @@ public class SpiderController : MonoBehaviour
         StartCoroutine(LegUpdateCoroutine());
     }
 
-    private void Update()
+    void Update()
     {
         if(Input.GetKey(KeyCode.W))
         {
