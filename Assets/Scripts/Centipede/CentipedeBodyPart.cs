@@ -16,7 +16,7 @@ public class CentipedeBodyPart : MonoBehaviour
 
     void Awake()
     {
-        DistanceToLeader = Vector3.Distance(transform.position, Follower.transform.position);
+        DistanceToLeader = Vector3.Distance(transform.position, Leader.transform.position);
         PrevPosition = transform.position;
     }
 
@@ -24,21 +24,31 @@ public class CentipedeBodyPart : MonoBehaviour
     {
         if(IsHead)
         {
-            Vector3 pos = transform.position;
-            if ((pos - PrevPosition).sqrMagnitude > MoveDistThreshold * MoveDistThreshold)
+            Vector3 newPos = transform.position;
+            if ((newPos - PrevPosition).sqrMagnitude > MoveDistThreshold * MoveDistThreshold)
             {
-                if(Follower != null)
+                float moveDist = (newPos - PrevPosition).magnitude;
+                if (Follower != null)
                 {
-                    Follower.UpdateBodyPart(PrevPosition);
+                    Follower.UpdateBodyPart(PrevPosition, moveDist);
                 }
+                PrevPosition = newPos;
             }
         }
     }
 
-    void UpdateBodyPart(Vector3 prevPos)
+    void UpdateBodyPart(Vector3 prevPos, float moveDist)
     {
-
-
+        if(Vector3.Distance(transform.position, Leader.position) > DistanceToLeader)
+        {
+            Vector3 moveDir = (prevPos - transform.position).normalized;
+            PrevPosition = transform.position;
+            transform.position += moveDir * moveDist;
+            if (Follower != null)
+            {
+                Follower.UpdateBodyPart(PrevPosition, moveDist);
+            }
+        }
     }
 
     /*
