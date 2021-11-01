@@ -45,10 +45,16 @@ public class FabricIK : IKInterface
 
         CompleteLength = 0.0f;
 
-        var current = transform;
-        for(int i = Bones.Length - 1; i >= 0; --i)
+        var current = transform.GetChild(0);
+        for (int i = 0; i < Bones.Length; ++i)
         {
             Bones[i] = current;
+            current = current.GetChild(0);
+        }
+
+        for (int i = Bones.Length - 1; i >= 0; --i)
+        {
+            current = Bones[i];
             StartRotationBone[i] = current.rotation;
 
             if(i == Bones.Length - 1)
@@ -153,16 +159,16 @@ public class FabricIK : IKInterface
 
     private void OnDrawGizmos()
     {
-        var current = transform;
-        for(int i = 0; i < ChainLength && current != null && current.parent != null; ++i)
+        var current = transform.GetChild(0);
+        for(int i = 0; i < ChainLength && current.childCount != 0; ++i)
         {
-            var scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
+            var scale = Vector3.Distance(current.position, current.GetChild(0).position) * 0.1f;
             Handles.matrix = Matrix4x4.TRS(current.position,
-                Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position),
-                new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
+                Quaternion.FromToRotation(Vector3.up, current.GetChild(0).position - current.position),
+                new Vector3(scale, Vector3.Distance(current.GetChild(0).position, current.position), scale));
             Handles.color = Color.green;
             Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
-            current = current.parent;
+            current = current.GetChild(0);
         }
     }
 }
