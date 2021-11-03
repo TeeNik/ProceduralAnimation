@@ -10,11 +10,18 @@ public class LegStepper : MonoBehaviour
     [SerializeField] private float moveDuration;
     [SerializeField] float stepOvershootFraction;
 
+    [SerializeField] LayerMask groundRaycastMask = ~0;
+
     public bool Moving { get; private set; }
+
+    private void Awake()
+    {
+        transform.position = homeTransform.position;
+    }
 
     private void Update()
     {
-        //Move();
+        Move();
     }
 
     public void Move()
@@ -36,14 +43,20 @@ public class LegStepper : MonoBehaviour
         Quaternion startRot = transform.rotation;
         Vector3 startPoint = transform.position;
 
-        Quaternion endRot = homeTransform.rotation;
+        //Quaternion endRot = homeTransform.rotation;
 
         Vector3 towardHome = homeTransform.position - transform.position;
         float overshootDistance = wantStepAtDistance * stepOvershootFraction;
         Vector3 overshootVector = towardHome * overshootDistance;
         overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
 
-        Vector3 endPoint = homeTransform.position + overshootVector;
+        Vector3 endPoint1 = homeTransform.position + overshootVector;
+        Vector3 endPoint;
+        Vector3 endNormal;
+        GetGroundedEndPosition(out endPoint, out endNormal);
+
+        Quaternion endRot = Quaternion.LookRotation(
+            Vector3.ProjectOnPlane(homeTransform.forward, endNormal), endNormal);
 
         Vector3 centerPoint = (startPoint + endPoint) / 2;
         centerPoint += homeTransform.up * Vector3.Distance(startPoint, endPoint) / 2;
@@ -67,5 +80,33 @@ public class LegStepper : MonoBehaviour
         while (timeElapsed < moveDuration);
 
         Moving = false;
+    }
+
+    bool GetGroundedEndPosition(out Vector3 position, out Vector3 normal)
+    {
+        Vector3 towardHome = (homeTransform.position - transform.position).normalized;
+
+        // Limit overshoot to a fraction of the step distance.
+        // This prevents infinite step cycles when a foot end point ends up outside its home position radius bounds.
+        float overshootDistance = wantStepAtDistance * stepOvershootFraction;
+        Vector3 overshootVector = towardHome * overshootDistance;
+
+        Vector3 raycastOrigin = homeTransform.position + overshootVector + homeTransform.up * 2f;
+
+        if (Physics.Raycast(
+            raycastOrigin,
+            -homeTransform.up,
+            out RaycastHit hit,
+            Mathf.Infinity,
+            groundRaycastMask
+        ))
+        {
+            position = hit.point;
+            normal = hit.normal;
+            return true;
+        }
+        position = Vector3.zero;
+        normal = Vector3.zero;
+        return false;
     }
 }

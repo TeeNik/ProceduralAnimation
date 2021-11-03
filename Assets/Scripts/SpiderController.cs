@@ -10,14 +10,19 @@ public class SpiderController : MonoBehaviour
     [SerializeField] LegStepper backLeftLegStepper;
     [SerializeField] LegStepper backRightLegStepper;
 
+    [SerializeField] Leg[] Legs;
+
     [Header("Movement")]
     public Transform Body;
     public float MovementSpeed;
     public float RotationSpeed;
 
+    public float BodyHeightBase = 0.2f;
+
     void Awake()
     {
         StartCoroutine(LegUpdateCoroutine());
+        StartCoroutine(AdjustBodyTransform());
     }
 
     void Update()
@@ -59,4 +64,44 @@ public class SpiderController : MonoBehaviour
             } while (backLeftLegStepper.Moving || frontRightLegStepper.Moving);
         }
     }
+    
+    private IEnumerator AdjustBodyTransform()
+    {
+        while (true)
+        {
+            Vector3 tipCenter = Vector3.zero;
+            Vector3 bodyUp = Vector3.zero;
+
+            //Collect leg information to calculate body transform
+            foreach (Leg leg in Legs)
+            {
+                tipCenter += leg.Tip.position;
+                //bodyUp += leg.Tip.up + leg.RaycastTipNormal;
+            }
+            tipCenter /= Legs.Length;
+
+            RaycastHit hit;
+            if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
+            {
+                bodyUp += hit.normal;
+            }
+
+            bodyUp.Normalize();
+
+            // Interpolate postition from old to new
+            Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
+            Body.position = Vector3.Lerp(Body.position, bodyPos, 0.05f);
+
+            // Calculate new body axis
+            Vector3 bodyRight = Vector3.Cross(bodyUp, Body.forward);
+            Vector3 bodyForward = Vector3.Cross(bodyRight, bodyUp);
+
+            // Interpolate rotation from old to new
+            Quaternion bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
+            Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, 0.05f);
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+    
 }

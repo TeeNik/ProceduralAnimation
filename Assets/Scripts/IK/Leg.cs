@@ -8,7 +8,9 @@ public class Leg : MonoBehaviour
     public MeshFilter MeshFilter;
     public IKInterface IK;
 
-    void Start()
+    public Transform Tip;
+
+    void Awake()
     {
         IK.OnBonesUpdated = OnBonesUpdated;
     }
