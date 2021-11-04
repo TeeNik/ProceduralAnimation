@@ -44,6 +44,7 @@ public class CentipedeBodyPart : MonoBehaviour
             Vector3 moveDir = (prevPos - transform.position).normalized;
             PrevPosition = transform.position;
             transform.position += moveDir * moveDist;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Leader.transform.rotation, 0.05f);
             if (Follower != null)
             {
                 Follower.UpdateBodyPart(PrevPosition, moveDist);
