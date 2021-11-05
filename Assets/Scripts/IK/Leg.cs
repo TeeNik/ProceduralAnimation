@@ -25,9 +25,10 @@ public class Leg : MonoBehaviour
             pos.Add(transform.InverseTransformPoint(child.position));
         }
 
+        Destroy(MeshFilter.sharedMesh);
         Mesh mesh = new Mesh();
         MeshCreator.CreateMesh(ref mesh, pos.ToArray(), 30, 0.1f);
-        MeshFilter.mesh = mesh;
+        MeshFilter.sharedMesh = mesh;
     }
 
     private void OnDrawGizmos()
