@@ -43,14 +43,6 @@ public class LegStepper : MonoBehaviour
         Quaternion startRot = transform.rotation;
         Vector3 startPoint = transform.position;
 
-        //Quaternion endRot = homeTransform.rotation;
-
-        Vector3 towardHome = homeTransform.position - transform.position;
-        float overshootDistance = wantStepAtDistance * stepOvershootFraction;
-        Vector3 overshootVector = towardHome * overshootDistance;
-        overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
-
-        Vector3 endPoint1 = homeTransform.position + overshootVector;
         Vector3 endPoint;
         Vector3 endNormal;
         GetGroundedEndPosition(out endPoint, out endNormal);

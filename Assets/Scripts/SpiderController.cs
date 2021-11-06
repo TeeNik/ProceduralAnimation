@@ -18,6 +18,7 @@ public class SpiderController : MonoBehaviour
     public float RotationSpeed;
 
     public float BodyHeightBase = 0.2f;
+    public float BodyAdjustSpeed = 0.05f;
 
     void Awake()
     {
@@ -76,7 +77,7 @@ public class SpiderController : MonoBehaviour
             foreach (Leg leg in Legs)
             {
                 tipCenter += leg.Tip.position;
-                //bodyUp += leg.Tip.up + leg.RaycastTipNormal;
+                bodyUp += leg.Tip.up;
             }
             tipCenter /= Legs.Length;
 
@@ -90,7 +91,7 @@ public class SpiderController : MonoBehaviour
 
             // Interpolate postition from old to new
             Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
-            Body.position = Vector3.Lerp(Body.position, bodyPos, 0.05f);
+            Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
 
             // Calculate new body axis
             Vector3 bodyRight = Vector3.Cross(bodyUp, Body.forward);
@@ -98,7 +99,7 @@ public class SpiderController : MonoBehaviour
 
             // Interpolate rotation from old to new
             Quaternion bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
-            Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, 0.05f);
+            Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, BodyAdjustSpeed);
 
             yield return new WaitForFixedUpdate();
         }

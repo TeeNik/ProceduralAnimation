@@ -49,7 +49,10 @@ public class FabricIK : IKInterface
         for (int i = 0; i < Bones.Length; ++i)
         {
             Bones[i] = current;
-            current = current.GetChild(0);
+            if(current.childCount > 0)
+            {
+                current = current.GetChild(0);
+            }
         }
 
         for (int i = Bones.Length - 1; i >= 0; --i)
@@ -67,7 +70,6 @@ public class FabricIK : IKInterface
                 BonesLength[i] = (Bones[i + 1].position - current.position).magnitude;
                 CompleteLength += BonesLength[i];
             }
-            current = current.parent;
         }
     }
 
