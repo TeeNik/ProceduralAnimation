@@ -11,12 +11,17 @@ public class LegStepper : MonoBehaviour
     [SerializeField] float stepOvershootFraction;
 
     [SerializeField] LayerMask groundRaycastMask = ~0;
+    [SerializeField] float heightOverGround = 0.0f;
+
 
     public bool Moving { get; private set; }
+
+    public Vector3 EndPoint;
 
     private void Awake()
     {
         transform.position = homeTransform.position;
+        EndPoint = transform.position;
     }
 
     private void Update()
@@ -45,7 +50,8 @@ public class LegStepper : MonoBehaviour
 
         Vector3 endPoint;
         Vector3 endNormal;
-        GetGroundedEndPosition(out endPoint, out endNormal);
+        bool result = GetGroundedEndPosition(out endPoint, out endNormal);
+        EndPoint = endPoint;
 
         Quaternion endRot = Quaternion.LookRotation(
             Vector3.ProjectOnPlane(homeTransform.forward, endNormal), endNormal);
@@ -93,7 +99,7 @@ public class LegStepper : MonoBehaviour
             groundRaycastMask
         ))
         {
-            position = hit.point;
+            position = hit.point + homeTransform.up * heightOverGround;
             normal = hit.normal;
             return true;
         }
