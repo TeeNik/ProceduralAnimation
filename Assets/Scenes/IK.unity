@@ -1093,7 +1093,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158707582}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8909999, y: -0.52, z: -0}
+  m_LocalPosition: {x: -0.89100003, y: -0.6000018, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 578104850}
@@ -2847,6 +2847,102 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447255022}
   m_Mesh: {fileID: 0}
+--- !u!1 &458495562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 458495566}
+  - component: {fileID: 458495565}
+  - component: {fileID: 458495564}
+  - component: {fileID: 458495563}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &458495563
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458495562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &458495564
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458495562}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 349cc7229e314664eaed8a8823f7c3d3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &458495565
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458495562}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &458495566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458495562}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.05, z: 7.89}
+  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &458798039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2944,6 +3040,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &475767277
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4012,6 +4110,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &618773972
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4224,6 +4324,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &658445028
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4340,6 +4442,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &668718795
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4801,7 +4905,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719049998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.9000001, y: -0.52, z: 0}
+  m_LocalPosition: {x: -0.9000001, y: -0.6000018, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1184449595}
@@ -5005,6 +5109,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &739733487
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6312,6 +6418,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &879522618
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6902,6 +7010,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1010826269
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9253,7 +9363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386640408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.91100043, y: -0.52, z: -0}
+  m_LocalPosition: {x: -0.91100043, y: -0.6000018, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1408402783}
@@ -9416,6 +9526,8 @@ MonoBehaviour:
   MovementSpeed: 2
   RotationSpeed: 50
   BodyHeightBase: 0.6
+  BodyAdjustSpeed: 0.05
+  BodyAdjustRotationSpeed: 0.05
 --- !u!1 &1408402782
 GameObject:
   m_ObjectHideFlags: 0
@@ -9813,6 +9925,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1497787246
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10255,6 +10369,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1544217693
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11652,6 +11768,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1757812628
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11731,7 +11849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1771809065
 Transform:
   m_ObjectHideFlags: 0
@@ -11908,6 +12026,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1789485170
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12280,7 +12400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1867740700
 Transform:
   m_ObjectHideFlags: 0
@@ -12945,6 +13065,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1940089065
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -13061,6 +13183,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1945259938
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -13218,7 +13342,7 @@ Transform:
   m_LocalScale: {x: 5, y: 3.7289, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 51.844, y: 0, z: 0}
 --- !u!1 &1991570221
 GameObject:
@@ -13317,6 +13441,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &1995204057
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -13684,7 +13810,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038963702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.891, y: -0.46, z: 0}
+  m_LocalPosition: {x: -0.891, y: -0.6000018, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 58185190}
@@ -14360,6 +14486,8 @@ MonoBehaviour:
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  heightOverGround: 0
+  EndPoint: {x: 0, y: 0, z: 0}
 --- !u!135 &2126999976
 SphereCollider:
   m_ObjectHideFlags: 0
