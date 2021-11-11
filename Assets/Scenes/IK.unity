@@ -425,6 +425,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1822736674}
   - {fileID: 247543186}
   - {fileID: 419951428}
   - {fileID: 1089586901}
@@ -811,6 +812,8 @@ MonoBehaviour:
   Follower: {fileID: 1844225482}
   IsHead: 1
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
 --- !u!65 &104574536
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1146,7 +1149,7 @@ Transform:
   - {fileID: 75232851}
   - {fileID: 778507735}
   m_Father: {fileID: 49178132}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &192476113
 BoxCollider:
@@ -1228,6 +1231,8 @@ MonoBehaviour:
   Follower: {fileID: 236732790}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 618773971}
+  frontRightLegStepper: {fileID: 739733486}
 --- !u!1 &193702351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1445,7 @@ Transform:
   - {fileID: 511224249}
   - {fileID: 1544150562}
   m_Father: {fileID: 49178132}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &236732787
 BoxCollider:
@@ -1522,6 +1527,8 @@ MonoBehaviour:
   Follower: {fileID: 0}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 1945259937}
+  frontRightLegStepper: {fileID: 668718794}
 --- !u!1 &247543182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1619,7 +1626,7 @@ Transform:
   - {fileID: 789225216}
   - {fileID: 1926558966}
   m_Father: {fileID: 49178132}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &247543187
 MonoBehaviour:
@@ -1633,11 +1640,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d8bc52562ef6664994c90c2807ee5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Leader: {fileID: 247543186}
+  Leader: {fileID: 1822736674}
   DistanceToLeader: 0
   Follower: {fileID: 419951432}
-  IsHead: 1
+  IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 475767276}
+  frontRightLegStepper: {fileID: 1995204056}
 --- !u!1 &256754158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2361,7 +2370,7 @@ Transform:
   - {fileID: 445159859}
   - {fileID: 2018803651}
   m_Father: {fileID: 49178132}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &419951429
 BoxCollider:
@@ -2443,6 +2452,8 @@ MonoBehaviour:
   Follower: {fileID: 1089586905}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 1497787245}
+  frontRightLegStepper: {fileID: 1544217692}
 --- !u!1 &426726935
 GameObject:
   m_ObjectHideFlags: 0
@@ -2983,10 +2994,106 @@ SphereCollider:
   m_GameObject: {fileID: 458798039}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &473563431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 473563435}
+  - component: {fileID: 473563434}
+  - component: {fileID: 473563433}
+  - component: {fileID: 473563432}
+  m_Layer: 0
+  m_Name: Sphere (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &473563432
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473563431}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &473563433
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473563431}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 349cc7229e314664eaed8a8823f7c3d3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &473563434
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473563431}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &473563435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473563431}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.05, z: 24.86}
+  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &475767274
 GameObject:
   m_ObjectHideFlags: 0
@@ -3036,7 +3143,7 @@ MonoBehaviour:
   homeTransform: {fileID: 458798040}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3051,7 +3158,7 @@ SphereCollider:
   m_GameObject: {fileID: 475767274}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -4106,7 +4213,7 @@ MonoBehaviour:
   homeTransform: {fileID: 1732596498}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4121,7 +4228,7 @@ SphereCollider:
   m_GameObject: {fileID: 618773969}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -4438,7 +4545,7 @@ MonoBehaviour:
   homeTransform: {fileID: 1086087965}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4453,7 +4560,7 @@ SphereCollider:
   m_GameObject: {fileID: 668718792}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -5105,7 +5212,7 @@ MonoBehaviour:
   homeTransform: {fileID: 1253230759}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -5120,7 +5227,7 @@ SphereCollider:
   m_GameObject: {fileID: 739733484}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -5711,7 +5818,7 @@ SphereCollider:
   m_GameObject: {fileID: 786400225}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -5799,6 +5906,8 @@ MonoBehaviour:
   Follower: {fileID: 0}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
 --- !u!65 &790102706
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6009,6 +6118,8 @@ MonoBehaviour:
   Follower: {fileID: 1529218987}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
 --- !u!65 &826183503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6361,7 +6472,7 @@ SphereCollider:
   m_GameObject: {fileID: 868678977}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -6414,7 +6525,7 @@ MonoBehaviour:
   homeTransform: {fileID: 1991570222}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -6429,7 +6540,7 @@ SphereCollider:
   m_GameObject: {fileID: 879522615}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -7231,7 +7342,7 @@ SphereCollider:
   m_GameObject: {fileID: 1062243881}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -7307,7 +7418,7 @@ SphereCollider:
   m_GameObject: {fileID: 1086087964}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -7345,7 +7456,7 @@ Transform:
   - {fileID: 1017430262}
   - {fileID: 2028763054}
   m_Father: {fileID: 49178132}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1089586902
 BoxCollider:
@@ -7427,6 +7538,8 @@ MonoBehaviour:
   Follower: {fileID: 192476116}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 879522617}
+  frontRightLegStepper: {fileID: 1789485169}
 --- !u!1 &1101720779
 GameObject:
   m_ObjectHideFlags: 0
@@ -8218,7 +8331,7 @@ SphereCollider:
   m_GameObject: {fileID: 1253230758}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -8611,7 +8724,7 @@ Transform:
   m_GameObject: {fileID: 1313814640}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.19171417, y: -1.063, z: 6.8313336}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -9707,7 +9820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeshFilter: {fileID: 1422700634}
   IK: {fileID: 1422700635}
-  Tip: {fileID: 0}
+  Tip: {fileID: 1320408873}
 --- !u!135 &1422700632
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9921,7 +10034,7 @@ MonoBehaviour:
   homeTransform: {fileID: 2126283403}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -9936,7 +10049,7 @@ SphereCollider:
   m_GameObject: {fileID: 1497787243}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -10220,6 +10333,8 @@ MonoBehaviour:
   Follower: {fileID: 790102705}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
 --- !u!65 &1529218988
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10365,7 +10480,7 @@ MonoBehaviour:
   homeTransform: {fileID: 786400226}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -10380,7 +10495,7 @@ SphereCollider:
   m_GameObject: {fileID: 1544217690}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -10570,7 +10685,7 @@ SphereCollider:
   m_GameObject: {fileID: 1615453272}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -11105,7 +11220,7 @@ SphereCollider:
   m_GameObject: {fileID: 1690215572}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -11281,7 +11396,7 @@ SphereCollider:
   m_GameObject: {fileID: 1732596497}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -11849,7 +11964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1771809065
 Transform:
   m_ObjectHideFlags: 0
@@ -11858,7 +11973,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771809064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 12}
+  m_LocalPosition: {x: 0, y: 0, z: 16.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1995204055}
@@ -11887,9 +12002,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b24eb7a9c08e244db67a47962c9bc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 247543186}
+  Legs:
+  - {fileID: 1422700631}
+  - {fileID: 2095944464}
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
+  Body: {fileID: 1822736674}
   MovementSpeed: 2
   RotationSpeed: 50
+  BodyHeightBase: 0.5
+  BodyAdjustSpeed: 0.05
+  BodyAdjustRotationSpeed: 0.05
 --- !u!1 &1778524336
 GameObject:
   m_ObjectHideFlags: 0
@@ -12022,7 +12145,7 @@ MonoBehaviour:
   homeTransform: {fileID: 868678978}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -12037,7 +12160,7 @@ SphereCollider:
   m_GameObject: {fileID: 1789485167}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -12174,6 +12297,122 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1822736673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1822736674}
+  - component: {fileID: 1822736678}
+  - component: {fileID: 1822736677}
+  - component: {fileID: 1822736676}
+  - component: {fileID: 1822736675}
+  m_Layer: 0
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1822736674
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822736673}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.75}
+  m_Children: []
+  m_Father: {fileID: 49178132}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1822736675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822736673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d8bc52562ef6664994c90c2807ee5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Leader: {fileID: 1822736674}
+  DistanceToLeader: 0
+  Follower: {fileID: 247543187}
+  IsHead: 1
+  MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
+--- !u!65 &1822736676
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822736673}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1822736677
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822736673}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1822736678
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822736673}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1844207124
 GameObject:
   m_ObjectHideFlags: 0
@@ -12322,6 +12561,8 @@ MonoBehaviour:
   Follower: {fileID: 826183502}
   IsHead: 0
   MoveDistThreshold: 0.05
+  frontLeftLegStepper: {fileID: 0}
+  frontRightLegStepper: {fileID: 0}
 --- !u!65 &1844225483
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13179,7 +13420,7 @@ MonoBehaviour:
   homeTransform: {fileID: 1062243882}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -13194,7 +13435,7 @@ SphereCollider:
   m_GameObject: {fileID: 1945259935}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -13384,7 +13625,7 @@ SphereCollider:
   m_GameObject: {fileID: 1991570221}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -13437,7 +13678,7 @@ MonoBehaviour:
   homeTransform: {fileID: 1690215573}
   wantStepAtDistance: 0.5
   moveDuration: 0.1
-  stepOvershootFraction: 1
+  stepOvershootFraction: 0.75
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -13452,7 +13693,7 @@ SphereCollider:
   m_GameObject: {fileID: 1995204054}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -14128,7 +14369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeshFilter: {fileID: 2095944467}
   IK: {fileID: 2095944468}
-  Tip: {fileID: 0}
+  Tip: {fileID: 426726936}
 --- !u!135 &2095944465
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14429,7 +14670,7 @@ SphereCollider:
   m_GameObject: {fileID: 2126283402}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
@@ -14497,7 +14738,7 @@ SphereCollider:
   m_GameObject: {fileID: 2126999973}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
