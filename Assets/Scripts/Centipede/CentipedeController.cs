@@ -63,7 +63,7 @@ public class CentipedeController : MonoBehaviour
                 {
                     tipNormal = tipHit.normal;
                 }
-                bodyUp += leg.Tip.up /*+ tipNormal*/;
+                //bodyUp += leg.Tip.up /*+ tipNormal*/;
             }
             
             tipCenter /= Legs.Length;
@@ -77,7 +77,7 @@ public class CentipedeController : MonoBehaviour
             bodyUp.Normalize();
 
             // Interpolate postition from old to new
-            Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
+            Vector3 bodyPos =/* tipCenter + */ hit.point + bodyUp * BodyHeightBase;
             Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
 
             // Calculate new body axis

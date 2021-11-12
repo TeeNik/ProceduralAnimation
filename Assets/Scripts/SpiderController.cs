@@ -14,7 +14,6 @@ public class SpiderController : MonoBehaviour
 
     [Header("Movement")]
     public Transform Body;
-    public Transform HomeParent;
     public float MovementSpeed;
     public float RotationSpeed;
 
