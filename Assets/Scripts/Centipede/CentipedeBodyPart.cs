@@ -17,6 +17,8 @@ public class CentipedeBodyPart : MonoBehaviour
     [SerializeField] LegStepper frontLeftLegStepper;
     [SerializeField] LegStepper frontRightLegStepper;
 
+    public float BodyHeightBase = 0.2f;
+
     void Awake()
     {
         DistanceToLeader = Vector3.Distance(transform.position, Leader.transform.position);
@@ -63,6 +65,18 @@ public class CentipedeBodyPart : MonoBehaviour
         var up = Vector3.Cross(forward, frontRightLegStepper.EndPoint - frontLeftLegStepper.EndPoint);
         Quaternion rot = Quaternion.LookRotation(forward, up);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, 0.05f);
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.up * -1, out hit, 10.0f))
+        {
+            var heightDiff = Vector3.Distance(transform.position, hit.point);
+            if(heightDiff < BodyHeightBase)
+            {
+                Vector3 position = transform.position + transform.up * (BodyHeightBase - heightDiff);
+                transform.position = Vector3.Lerp(transform.position, position, 0.05f);
+                //transform.position += transform.up * (BodyHeightBase - heightDiff);
+            }
+        }
 
     }
 }
