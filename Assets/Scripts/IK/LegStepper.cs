@@ -33,8 +33,10 @@ public class LegStepper : MonoBehaviour
     {
         if (!Moving)
         {
+            Vector3 dir = transform.position - homeTransform.position;
+            dir.y = 0.0f;
             float distFromHome = Vector3.Distance(transform.position, homeTransform.position);
-            if (distFromHome > wantStepAtDistance)
+            if (dir.magnitude > wantStepAtDistance)
             {
                 StartCoroutine(MoveToHome());
             }
