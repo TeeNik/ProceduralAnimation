@@ -35,28 +35,28 @@ public class LegStepper : MonoBehaviour
         {
             Vector3 dir = transform.position - homeTransform.position;
             dir.y = 0.0f;
-            float distFromHome = Vector3.Distance(transform.position, homeTransform.position);
             if (dir.magnitude > wantStepAtDistance)
             {
-                StartCoroutine(MoveToHome());
+                Vector3 endPos;
+                Vector3 endNormal;
+                if(GetGroundedEndPosition(out endPos, out endNormal))
+                {
+                    EndPoint = endPos;
+                    Quaternion endRot = Quaternion.LookRotation(
+                        Vector3.ProjectOnPlane(homeTransform.forward, endNormal), endNormal);
+
+                    StartCoroutine(MoveToHome(endPos, endRot));
+                }
             }
         }
     }
 
-    IEnumerator MoveToHome()
+    IEnumerator MoveToHome(Vector3 endPoint, Quaternion endRot)
     {
         Moving = true;
 
         Quaternion startRot = transform.rotation;
         Vector3 startPoint = transform.position;
-
-        Vector3 endPoint;
-        Vector3 endNormal;
-        bool result = GetGroundedEndPosition(out endPoint, out endNormal);
-        EndPoint = endPoint;
-
-        Quaternion endRot = Quaternion.LookRotation(
-            Vector3.ProjectOnPlane(homeTransform.forward, endNormal), endNormal);
 
         Vector3 centerPoint = (startPoint + endPoint) / 2;
         centerPoint += homeTransform.up * Vector3.Distance(startPoint, endPoint) / 2;
@@ -85,9 +85,6 @@ public class LegStepper : MonoBehaviour
     bool GetGroundedEndPosition(out Vector3 position, out Vector3 normal)
     {
         Vector3 towardHome = (homeTransform.position - transform.position).normalized;
-
-        // Limit overshoot to a fraction of the step distance.
-        // This prevents infinite step cycles when a foot end point ends up outside its home position radius bounds.
         float overshootDistance = wantStepAtDistance * stepOvershootFraction;
         Vector3 overshootVector = towardHome * overshootDistance;
 
