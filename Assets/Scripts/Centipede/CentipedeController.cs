@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class CentipedeController : MonoBehaviour
 {
-    [SerializeField] Leg[] Legs;
-
-    [Header("Legs")]
-    [SerializeField] LegStepper frontLeftLegStepper;
-    [SerializeField] LegStepper frontRightLegStepper;
+    [SerializeField] LegStepper[] Legs;
 
     [Header("Movement")]
     public Transform Body;
@@ -21,7 +17,7 @@ public class CentipedeController : MonoBehaviour
 
     void Awake()
     {
-        //StartCoroutine(LegUpdateCoroutine());
+        StartCoroutine(LegUpdateCoroutine());
         StartCoroutine(AdjustBodyTransform());
     }
 
@@ -49,62 +45,40 @@ public class CentipedeController : MonoBehaviour
     {
         while (true)
         {
-            Vector3 tipCenter = Vector3.zero;
             Vector3 bodyUp = Vector3.zero;
-
-            //Collect leg information to calculate body transform
-            foreach (Leg leg in Legs)
-            {
-                tipCenter += leg.Tip.position;
-            
-                RaycastHit tipHit;
-                Vector3 tipNormal = Vector3.zero;
-                if (Physics.Raycast(leg.Tip.position, leg.Tip.up.normalized * -1, out tipHit, 10.0f))
-                {
-                    tipNormal = tipHit.normal;
-                }
-                //bodyUp += leg.Tip.up /*+ tipNormal*/;
-            }
-            
-            tipCenter /= Legs.Length;
-
             RaycastHit hit;
             if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
             {
                 bodyUp += hit.normal;
             }
-
             bodyUp.Normalize();
 
-            // Interpolate postition from old to new
-            Vector3 bodyPos =/* tipCenter + */ hit.point + bodyUp * BodyHeightBase;
+            Vector3 bodyPos = hit.point + bodyUp * BodyHeightBase;
             Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
 
-            // Calculate new body axis
             Vector3 bodyRight = Vector3.Cross(bodyUp, Body.forward);
             Vector3 bodyForward = Vector3.Cross(bodyRight, bodyUp);
 
-            // Interpolate rotation from old to new
             Quaternion bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
-
             Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, BodyAdjustRotationSpeed);
 
-
-            //var front = (frontLeftLegStepper.EndPoint + frontRightLegStepper.EndPoint) / 2;
-            //var forwardRot = Quaternion.LookRotation(front - back);
-            //forwardRot.y = Body.rotation.y;
-            //
-            //var left = (frontLeftLegStepper.EndPoint + backLeftLegStepper.EndPoint) / 2;
-            //var right = (frontRightLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
-            //var rightRot = Quaternion.LookRotation(right - left);
-            //
-            //Vector3 up = Vector3.Cross(right - left, -(front - back));
-            //var look = Quaternion.LookRotation(front - back, up);
-            ////look.y = Body.rotation.y;
-            //
-            //Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
-
             yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator LegUpdateCoroutine()
+    {
+        while (true)
+        {
+            for(int i = 0; i < Legs.Length; ++i)
+            {
+                Legs[i].Move();
+                if (Legs[i].Moving)
+                {
+                    ++i;
+                }
+            }
+            yield return null;
         }
     }
 }
