@@ -15,8 +15,7 @@ public class LegStepper : MonoBehaviour
 
 
     public bool Moving { get; private set; }
-
-    public Vector3 EndPoint;
+    public Vector3 EndPoint { get; private set; }
 
     private void Awake()
     {
@@ -26,7 +25,7 @@ public class LegStepper : MonoBehaviour
 
     private void Update()
     {
-        Move();
+        //Move();
     }
 
     public void Move()

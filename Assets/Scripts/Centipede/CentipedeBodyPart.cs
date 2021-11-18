@@ -17,7 +17,7 @@ public class CentipedeBodyPart : MonoBehaviour
     [SerializeField] LegStepper frontLeftLegStepper;
     [SerializeField] LegStepper frontRightLegStepper;
 
-    public float BodyHeightBase = 0.2f;
+    public float BodyHeightBase = 0.5f;
 
     void Awake()
     {
