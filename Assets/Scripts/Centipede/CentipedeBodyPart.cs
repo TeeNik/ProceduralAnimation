@@ -10,14 +10,14 @@ public class CentipedeBodyPart : MonoBehaviour
     public bool IsHead = false;
 
     public float MoveDistThreshold = 0.05f;
+    public float BodyHeightBase = 0.5f;
 
     private Vector3 PrevPosition;
 
     [Header("Legs")]
-    [SerializeField] LegStepper frontLeftLegStepper;
-    [SerializeField] LegStepper frontRightLegStepper;
+    [SerializeField] LegStepper LeftLegStepper;
+    [SerializeField] LegStepper RightLegStepper;
 
-    public float BodyHeightBase = 0.5f;
 
     void Awake()
     {
@@ -54,15 +54,13 @@ public class CentipedeBodyPart : MonoBehaviour
 
             forward = Leader.transform.forward;
 
-            //transform.rotation = Quaternion.Lerp(transform.rotation, Leader.transform.rotation, 0.05f);
             if (Follower != null)
             {
                 Follower.UpdateBodyPart(PrevPosition, moveDist);
             }
         }
 
-        var right = (frontLeftLegStepper.EndPoint + frontRightLegStepper.EndPoint) / 2;
-        var up = Vector3.Cross(forward, frontRightLegStepper.EndPoint - frontLeftLegStepper.EndPoint);
+        var up = Vector3.Cross(forward, RightLegStepper.EndPoint - LeftLegStepper.EndPoint);
         Quaternion rot = Quaternion.LookRotation(forward, up);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, 0.05f);
 
@@ -74,9 +72,7 @@ public class CentipedeBodyPart : MonoBehaviour
             {
                 Vector3 position = transform.position + transform.up * (BodyHeightBase - heightDiff);
                 transform.position = Vector3.Lerp(transform.position, position, 0.05f);
-                //transform.position += transform.up * (BodyHeightBase - heightDiff);
             }
         }
-
     }
 }

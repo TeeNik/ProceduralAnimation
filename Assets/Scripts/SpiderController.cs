@@ -74,7 +74,6 @@ public class SpiderController : MonoBehaviour
             Vector3 tipCenter = Vector3.zero;
             Vector3 bodyUp = Vector3.zero;
 
-            //Collect leg information to calculate body transform
             foreach (Leg leg in Legs)
             {
                 tipCenter += leg.Tip.position;
@@ -85,7 +84,7 @@ public class SpiderController : MonoBehaviour
                 {
                     tipNormal = tipHit.normal;
                 }
-                bodyUp += leg.Tip.up /*+ tipNormal*/;
+                bodyUp += leg.Tip.up;
             }
 
             tipCenter /= Legs.Length;
@@ -98,39 +97,21 @@ public class SpiderController : MonoBehaviour
 
             bodyUp.Normalize();
 
-            // Interpolate postition from old to new
             Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
             Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
 
-            // Calculate new body axis
-            Vector3 bodyRight = Vector3.Cross(bodyUp, Body.forward);
-            Vector3 bodyForward = Vector3.Cross(bodyRight, bodyUp);
-
-            // Interpolate rotation from old to new
-            Quaternion bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
-
-            //Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, BodyAdjustRotationSpeed);
-
-            //var left = (frontLeftLegStepper.transform.position + backLeftLegStepper.transform.position) / 2;
-            //var right = (frontRightLegStepper.transform.position + backRightLegStepper.transform.position) / 2;
-            //Body.rotation = Quaternion.Slerp(Body.rotation, Quaternion.LookRotation(right), BodyAdjustRotationSpeed);
-
             var front = (frontLeftLegStepper.EndPoint + frontRightLegStepper.EndPoint) / 2;
             var back = (backLeftLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
-            var forwardRot = Quaternion.LookRotation(front - back);
-            forwardRot.y = Body.rotation.y;
+
 
             var left = (frontLeftLegStepper.EndPoint + backLeftLegStepper.EndPoint) / 2;
             var right = (frontRightLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
-            var rightRot = Quaternion.LookRotation(right - left);
 
             Vector3 up = Vector3.Cross(right - left, -(front - back));
             var look = Quaternion.LookRotation(front - back, up);
             //look.y = Body.rotation.y;
 
             Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
-
-            //TODO calculate right direction too
 
             Debug.DrawLine(front, back, Color.red);
             Debug.DrawLine(right, left, Color.blue);

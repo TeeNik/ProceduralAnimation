@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LegStepper : MonoBehaviour
 {
-
     [SerializeField] private Transform homeTransform;
     [SerializeField] private float wantStepAtDistance;
     [SerializeField] private float moveDuration;
@@ -12,7 +11,6 @@ public class LegStepper : MonoBehaviour
 
     [SerializeField] LayerMask groundRaycastMask = ~0;
     [SerializeField] float heightOverGround = 0.0f;
-
 
     public bool Moving { get; private set; }
     public Vector3 EndPoint { get; private set; }
@@ -41,9 +39,7 @@ public class LegStepper : MonoBehaviour
                 if(GetGroundedEndPosition(out endPos, out endNormal))
                 {
                     EndPoint = endPos;
-                    Quaternion endRot = Quaternion.LookRotation(
-                        Vector3.ProjectOnPlane(homeTransform.forward, endNormal), endNormal);
-
+                    Quaternion endRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(homeTransform.forward, endNormal), endNormal);
                     StartCoroutine(MoveToHome(endPos, endRot));
                 }
             }

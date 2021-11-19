@@ -977,8 +977,8 @@ MonoBehaviour:
   Follower: {fileID: 1844225482}
   IsHead: 1
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &104574536
 BoxCollider:
@@ -1290,8 +1290,8 @@ MonoBehaviour:
   Follower: {fileID: 0}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 785479714}
-  frontRightLegStepper: {fileID: 241067958}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.5
 --- !u!65 &142904769
 BoxCollider:
@@ -1516,8 +1516,8 @@ MonoBehaviour:
   Follower: {fileID: 236732790}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 618773971}
-  frontRightLegStepper: {fileID: 739733486}
+  LeftLegStepper: {fileID: 618773971}
+  RightLegStepper: {fileID: 739733486}
   BodyHeightBase: 0.5
 --- !u!1 &193702351
 GameObject:
@@ -1896,8 +1896,8 @@ MonoBehaviour:
   Follower: {fileID: 0}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 1945259937}
-  frontRightLegStepper: {fileID: 668718794}
+  LeftLegStepper: {fileID: 1945259937}
+  RightLegStepper: {fileID: 668718794}
   BodyHeightBase: 0.5
 --- !u!1 &241067956
 GameObject:
@@ -2080,8 +2080,8 @@ MonoBehaviour:
   Follower: {fileID: 419951432}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 475767276}
-  frontRightLegStepper: {fileID: 1995204056}
+  LeftLegStepper: {fileID: 475767276}
+  RightLegStepper: {fileID: 1995204056}
   BodyHeightBase: 0.5
 --- !u!1 &256754158
 GameObject:
@@ -2932,8 +2932,8 @@ MonoBehaviour:
   Follower: {fileID: 1089586905}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 1497787245}
-  frontRightLegStepper: {fileID: 1544217692}
+  LeftLegStepper: {fileID: 1497787245}
+  RightLegStepper: {fileID: 1544217692}
   BodyHeightBase: 0.5
 --- !u!1 &426726935
 GameObject:
@@ -6706,8 +6706,8 @@ MonoBehaviour:
   Follower: {fileID: 0}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &790102706
 BoxCollider:
@@ -7015,8 +7015,8 @@ MonoBehaviour:
   Follower: {fileID: 1529218987}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &826183503
 BoxCollider:
@@ -8489,8 +8489,8 @@ MonoBehaviour:
   Follower: {fileID: 192476116}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 879522617}
-  frontRightLegStepper: {fileID: 1789485169}
+  LeftLegStepper: {fileID: 879522617}
+  RightLegStepper: {fileID: 1789485169}
   BodyHeightBase: 0.5
 --- !u!1 &1101720779
 GameObject:
@@ -11533,8 +11533,8 @@ MonoBehaviour:
   Follower: {fileID: 790102705}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &1529218988
 BoxCollider:
@@ -12321,8 +12321,8 @@ MonoBehaviour:
   Follower: {fileID: 142904768}
   IsHead: 1
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &1665063503
 BoxCollider:
@@ -13834,8 +13834,8 @@ MonoBehaviour:
   Follower: {fileID: 247543187}
   IsHead: 1
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &1822736676
 BoxCollider:
@@ -14048,8 +14048,8 @@ MonoBehaviour:
   Follower: {fileID: 826183502}
   IsHead: 0
   MoveDistThreshold: 0.05
-  frontLeftLegStepper: {fileID: 0}
-  frontRightLegStepper: {fileID: 0}
+  LeftLegStepper: {fileID: 0}
+  RightLegStepper: {fileID: 0}
   BodyHeightBase: 0.2
 --- !u!65 &1844225483
 BoxCollider:
