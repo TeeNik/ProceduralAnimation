@@ -30,8 +30,10 @@ public class LegStepper : MonoBehaviour
     {
         if (!Moving)
         {
-            Vector3 dir = transform.position - homeTransform.position;
-            dir.y = 0.0f;
+            Vector3 pos = Vector3.ProjectOnPlane(transform.position, transform.up);
+            Vector3 homePos = Vector3.ProjectOnPlane(homeTransform.position, transform.up);
+            Vector3 dir = pos - homePos;
+
             if (dir.magnitude > wantStepAtDistance)
             {
                 Vector3 endPos;
