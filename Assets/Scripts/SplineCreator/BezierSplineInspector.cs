@@ -13,6 +13,11 @@ public class BezierSplineInspector : Editor
     private const int lineSteps = 10;
     private const float directionalScale = 0.5f;
 
+	private const float handleSize = 0.04f;
+	private const float pickSize = 0.06f;
+
+	private int selectedIndex = -1;
+
 	private void OnSceneGUI()
 	{
 		spline = target as BezierSpline;
@@ -52,13 +57,23 @@ public class BezierSplineInspector : Editor
 	private Vector3 ShowPoint(int index)
 	{
 		Vector3 point = transform.TransformPoint(spline.points[index]);
-		EditorGUI.BeginChangeCheck();
-		point = Handles.DoPositionHandle(point, rotation);
-		if (EditorGUI.EndChangeCheck())
-		{
-			Undo.RecordObject(spline, "Move Point");
-			EditorUtility.SetDirty(spline);
-			spline.points[index] = transform.InverseTransformPoint(point);
+		float size = HandleUtility.GetHandleSize(point);
+		Handles.color = Color.white;
+
+		if(Handles.Button(point, rotation, size * handleSize, size * pickSize, Handles.DotHandleCap))
+        {
+			selectedIndex = index;
+        }
+		if(selectedIndex == index)
+        {
+			EditorGUI.BeginChangeCheck();
+			point = Handles.DoPositionHandle(point, rotation);
+			if (EditorGUI.EndChangeCheck())
+			{
+				Undo.RecordObject(spline, "Move Point");
+				EditorUtility.SetDirty(spline);
+				spline.points[index] = transform.InverseTransformPoint(point);
+			}
 		}
 		return point;
 	}
@@ -74,4 +89,6 @@ public class BezierSplineInspector : Editor
 			Handles.DrawLine(point, point + spline.GetDirection(i / (float)lineSteps) * directionalScale);
 		}
 	}
+
+
 }

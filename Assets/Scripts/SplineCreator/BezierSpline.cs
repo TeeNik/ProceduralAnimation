@@ -19,12 +19,38 @@ public class BezierSpline : MonoBehaviour
 
 	public Vector3 GetPoint(float t)
 	{
-		return transform.TransformPoint(Bezier.GetPoint(points[0], points[1], points[2], points[3], t));
+		int i;
+		if(t >= 1.0f)
+        {
+			t = 1.0f;
+			i = points.Length - 4;
+        }
+		else
+        {
+			t = Mathf.Clamp01(t) * GetCurveCount();
+			i = (int)t;
+			t -= i;
+			i *= 3;
+        }
+		return transform.TransformPoint(Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t));
 	}
 
 	public Vector3 GetVelocity(float t)
 	{
-		return transform.TransformPoint(Bezier.GetFirstDerivative(points[0], points[1], points[2], points[3], t)) -
+		int i;
+		if (t >= 1.0f)
+		{
+			t = 1.0f;
+			i = points.Length - 4;
+		}
+		else
+		{
+			t = Mathf.Clamp01(t) * GetCurveCount();
+			i = (int)t;
+			t -= i;
+			i *= 3;
+		}
+		return transform.TransformPoint(Bezier.GetFirstDerivative(points[i], points[i + 1], points[i + 2], points[i + 3], t)) -
 			transform.position;
 	}
 
@@ -44,5 +70,10 @@ public class BezierSpline : MonoBehaviour
 		point.x += 1.0f;
 		points[points.Length - 1] = point;
 		point.x += 1.0f;
+	}
+
+	public int GetCurveCount()
+	{
+		return (points.Length - 1) / 3;
 	}
 }
