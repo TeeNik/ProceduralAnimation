@@ -1,11 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum BezierControlPointMode
+{
+	Free,
+	Aligned,
+	Mirrored
+}
+
 public class BezierSpline : MonoBehaviour
 {
-	public Vector3[] points;
+	[SerializeField] private Vector3[] points;
+	[SerializeField] private BezierControlPointMode[] modes;
 
 	public void Reset()
 	{
@@ -14,6 +20,11 @@ public class BezierSpline : MonoBehaviour
 			new Vector3(2.0f, 0.0f, 0.0f),
 			new Vector3(3.0f, 0.0f, 0.0f),
 			new Vector3(4.0f, 0.0f, 0.0f),
+		};
+		modes = new BezierControlPointMode[]
+		{
+			BezierControlPointMode.Free,
+			BezierControlPointMode.Free
 		};
 	}
 
@@ -70,10 +81,38 @@ public class BezierSpline : MonoBehaviour
 		point.x += 1.0f;
 		points[points.Length - 1] = point;
 		point.x += 1.0f;
+
+		Array.Resize(ref modes, modes.Length + 1);
+		modes[modes.Length - 1] = modes[modes.Length - 2];
 	}
 
 	public int GetCurveCount()
 	{
 		return (points.Length - 1) / 3;
+	}
+
+	public int GetControlPointCount()
+    {
+		return points.Length;
+    }
+
+	public Vector3 GetControlPoint(int index)
+    {
+		return points[index];
+    }
+
+	public void SetControlPoint(int index, Vector3 point)
+    {
+		points[index] = point;
+    }
+
+	public BezierControlPointMode GetControlPointMode(int index)
+	{
+		return modes[(index + 1) / 3];
+	}
+
+	public void SetControlPointMode(int index, BezierControlPointMode mode)
+	{
+		modes[(index + 1) / 3] = mode;
 	}
 }
