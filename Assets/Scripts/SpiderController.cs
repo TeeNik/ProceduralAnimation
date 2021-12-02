@@ -21,6 +21,8 @@ public class SpiderController : MonoBehaviour
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
+    private float rot = 0.0f;
+
     void Awake()
     {
         StartCoroutine(LegUpdateCoroutine());
@@ -40,10 +42,12 @@ public class SpiderController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+            rot = -RotationSpeed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.D))
         {
             Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+            rot = RotationSpeed * Time.deltaTime;
         }
     }
 
@@ -100,21 +104,29 @@ public class SpiderController : MonoBehaviour
             Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
             Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
 
-            var front = (frontLeftLegStepper.EndPoint + frontRightLegStepper.EndPoint) / 2;
-            var back = (backLeftLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
+            var frontPoint = (frontLeftLegStepper.EndPoint + frontRightLegStepper.EndPoint) / 2;
+            var backPoint = (backLeftLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
 
+            var leftPoint = (frontLeftLegStepper.EndPoint + backLeftLegStepper.EndPoint) / 2;
+            var rightPoint = (frontRightLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
 
-            var left = (frontLeftLegStepper.EndPoint + backLeftLegStepper.EndPoint) / 2;
-            var right = (frontRightLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
+            Vector3 forward = Body.transform.forward;
+            forward.y = (frontPoint - backPoint).y;
 
-            Vector3 up = Vector3.Cross(right - left, -(front - back));
-            var look = Quaternion.LookRotation(front - back, up);
-            //look.y = Body.rotation.y;
+            Vector3 right = (rightPoint - leftPoint).normalized;
+            Vector3 up = Vector3.Cross(right, -(forward));
 
-            Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
+            if(Mathf.Abs(rot) > 0.0001f)
+            {
+                forward = Quaternion.AngleAxis(rot * 100, up) * forward;
+                rot = 0.0f;
+            }
 
-            Debug.DrawLine(front, back, Color.red);
-            Debug.DrawLine(right, left, Color.blue);
+            var look = Quaternion.LookRotation(forward, up);
+            //Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
+
+            Debug.DrawLine(frontPoint, backPoint, Color.red);
+            Debug.DrawLine(rightPoint, leftPoint, Color.blue);
 
             yield return new WaitForFixedUpdate();
         }
