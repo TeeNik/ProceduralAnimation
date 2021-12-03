@@ -41,12 +41,12 @@ public class SpiderController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
-            Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+            //Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
             rot = -RotationSpeed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+            //Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
             rot = RotationSpeed * Time.deltaTime;
         }
     }
@@ -123,7 +123,7 @@ public class SpiderController : MonoBehaviour
             }
 
             var look = Quaternion.LookRotation(forward, up);
-            //Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
+            Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
 
             Debug.DrawLine(frontPoint, backPoint, Color.red);
             Debug.DrawLine(rightPoint, leftPoint, Color.blue);
