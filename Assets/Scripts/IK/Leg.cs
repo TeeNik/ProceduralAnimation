@@ -10,6 +10,9 @@ public class Leg : MonoBehaviour
 
     public Transform Tip;
 
+    public LegOrientation[] LegOrientations;
+    public bool UseMeshGeneration = true;
+
     void Awake()
     {
         IK.OnBonesUpdated = OnBonesUpdated;
@@ -17,18 +20,14 @@ public class Leg : MonoBehaviour
 
     void OnBonesUpdated(Vector3[] position)
     {
-        List<Vector3> pos = new List<Vector3>();
-        Transform child = transform;
-        while(child.childCount > 0)
+        if(UseMeshGeneration)
         {
-            child = child.GetChild(0);
-            pos.Add(transform.InverseTransformPoint(child.position));
+            GenerateMeshForLeg();
+        } 
+        else
+        {
+            UpdateLegOrientation();
         }
-
-        Destroy(MeshFilter.sharedMesh);
-        Mesh mesh = new Mesh();
-        MeshCreator.CreateMesh(ref mesh, pos.ToArray(), 30, 0.1f);
-        MeshFilter.sharedMesh = mesh;
     }
 
     private void OnDrawGizmos()
@@ -46,5 +45,29 @@ public class Leg : MonoBehaviour
             Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
         }
         */
+    }
+
+    private void GenerateMeshForLeg()
+    {
+        List<Vector3> pos = new List<Vector3>();
+        Transform child = transform;
+        while (child.childCount > 0)
+        {
+            child = child.GetChild(0);
+            pos.Add(transform.InverseTransformPoint(child.position));
+        }
+
+        Destroy(MeshFilter.sharedMesh);
+        Mesh mesh = new Mesh();
+        MeshCreator.CreateMesh(ref mesh, pos.ToArray(), 30, 0.1f);
+        MeshFilter.sharedMesh = mesh;
+    }
+
+    private void UpdateLegOrientation()
+    {
+        for(int i = 0; i < LegOrientations.Length; ++i)
+        {
+            LegOrientations[i].UpdateOrientation();
+        }
     }
 }
