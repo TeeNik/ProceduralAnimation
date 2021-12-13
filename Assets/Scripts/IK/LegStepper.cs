@@ -23,7 +23,17 @@ public class LegStepper : MonoBehaviour
 
     private void Update()
     {
-        //Move();
+        Move();
+    }
+
+    public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround)
+    {
+        this.homeTransform = homeTransform;
+        this.wantStepAtDistance = wantStepAtDistance;
+        this.moveDuration = moveDuration;
+        this.stepOvershootFraction = stepOvershootFraction;
+        this.groundRaycastMask = groundRaycastMask;
+        this.heightOverGround = heightOverGround;
     }
 
     public void Move()

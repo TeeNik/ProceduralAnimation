@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CentipedeController : MonoBehaviour
 {
-    [SerializeField] LegStepper[] Legs;
+    public LegStepperSetup LegStepperSetup;
 
     [Header("Movement")]
     public Transform Body;
@@ -15,8 +15,13 @@ public class CentipedeController : MonoBehaviour
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
+    private LegStepper[] Legs;
+
+
     void Awake()
     {
+        Legs = LegStepperSetup.CreateLegSteppers();
+
         StartCoroutine(LegUpdateCoroutine());
         StartCoroutine(AdjustBodyTransform());
     }
