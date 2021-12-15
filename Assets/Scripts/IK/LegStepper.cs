@@ -15,7 +15,7 @@ public class LegStepper : MonoBehaviour
     public bool Moving { get; private set; }
     public Vector3 EndPoint { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         transform.position = homeTransform.position;
         EndPoint = transform.position;

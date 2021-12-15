@@ -15,15 +15,31 @@ public class CentipedeController : MonoBehaviour
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
-    private LegStepper[] Legs;
+    private LegStepper[] LegSteppers;
 
 
     void Awake()
     {
-        Legs = LegStepperSetup.CreateLegSteppers();
+        Init();
 
         StartCoroutine(LegUpdateCoroutine());
         StartCoroutine(AdjustBodyTransform());
+    }
+
+    private void Init()
+    {
+        LegSteppers = LegStepperSetup.CreateLegSteppers();
+
+        CentipedeBodyPart[] bodyParts = GetComponentsInChildren<CentipedeBodyPart>();
+        int i = 0;
+        foreach (var bodyPart in bodyParts)
+        {
+            if(!bodyPart.IsHead)
+            {
+                bodyPart.InitLegSteppers(LegSteppers[i + 1], LegSteppers[i]);
+                i += 2;
+            }
+        }
     }
 
     void Update()
@@ -75,10 +91,10 @@ public class CentipedeController : MonoBehaviour
     {
         while (true)
         {
-            for(int i = 0; i < Legs.Length; ++i)
+            for(int i = 0; i < LegSteppers.Length; ++i)
             {
-                Legs[i].Move();
-                if (Legs[i].Moving)
+                LegSteppers[i].Move();
+                if (LegSteppers[i].Moving)
                 {
                     ++i;
                 }

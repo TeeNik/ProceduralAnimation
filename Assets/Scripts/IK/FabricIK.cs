@@ -28,7 +28,7 @@ public class FabricIK : IKInterface
     protected Quaternion StartRotationTarget;
     protected Quaternion StartRotationRoot;
 
-    void Awake()
+    void Start()
     {
         Init();
     }

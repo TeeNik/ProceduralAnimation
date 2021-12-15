@@ -14,14 +14,16 @@ public class CentipedeBodyPart : MonoBehaviour
 
     private Vector3 PrevPosition;
 
-    [Header("Legs")]
     [SerializeField] LegStepper LeftLegStepper;
     [SerializeField] LegStepper RightLegStepper;
 
 
     void Awake()
     {
-        DistanceToLeader = Vector3.Distance(transform.position, Leader.transform.position);
+        if(!IsHead)
+        {
+            DistanceToLeader = Vector3.Distance(transform.position, Leader.transform.position);
+        }
         PrevPosition = transform.position;
     }
 
@@ -40,6 +42,12 @@ public class CentipedeBodyPart : MonoBehaviour
                 PrevPosition = newPos;
             }
         }
+    }
+
+    public void InitLegSteppers(LegStepper rightLegStepper, LegStepper leftLegStepper)
+    {
+        LeftLegStepper = leftLegStepper;
+        RightLegStepper = rightLegStepper;
     }
 
     void UpdateBodyPart(Vector3 prevPos, float moveDist)
