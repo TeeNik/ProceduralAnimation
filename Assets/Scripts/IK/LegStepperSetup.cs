@@ -16,11 +16,13 @@ public class LegStepperSetup : MonoBehaviour
         List<LegStepper> steppers = new List<LegStepper>();
         GameObject legStepperGO = new GameObject();
         Leg[] legs = GetComponentsInChildren<Leg>();
-        foreach (var leg in legs)
+        for (int i = 0; i < legs.Length; i++)
         {
+            Leg leg = legs[i];
             Transform home = leg.transform.parent.Find("Home");
 
             GameObject legStepperObject = Instantiate(legStepperGO, transform);
+            legStepperObject.name = "LegStepper_" + i;
             LegStepper legStepper = legStepperObject.AddComponent<LegStepper>();
             legStepper.Setup(home, wantStepAtDistance, moveDuration, stepOvershootFraction, groundRaycastMask, heightOverGround);
 
