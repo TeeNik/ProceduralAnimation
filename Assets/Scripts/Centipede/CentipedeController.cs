@@ -17,7 +17,6 @@ public class CentipedeController : MonoBehaviour
 
     private LegStepper[] LegSteppers;
 
-
     void Awake()
     {
         Init();
@@ -30,15 +29,23 @@ public class CentipedeController : MonoBehaviour
     {
         LegSteppers = LegStepperSetup.CreateLegSteppers();
 
-        CentipedeBodyPart[] bodyParts = GetComponentsInChildren<CentipedeBodyPart>();
+        CentipedeBodyPartNew[] bodyParts = GetComponentsInChildren<CentipedeBodyPartNew>();
         int i = 0;
-        foreach (var bodyPart in bodyParts)
+        for (int j = 0; j < bodyParts.Length; j++)
         {
-            if(!bodyPart.IsHead)
+            CentipedeBodyPartNew bodyPart = bodyParts[j];
+            CentipedeBodyPartNew leader = j > 0 ? bodyParts[j - 1] : null;
+            CentipedeBodyPartNew follower = j < bodyParts.Length - 1 ? bodyParts[j + 1] : null;
+            LegStepper rightStepper = null;
+            LegStepper leftStepper = null;
+
+            if(j > 0)
             {
-                bodyPart.InitLegSteppers(LegSteppers[i + 1], LegSteppers[i]);
+                rightStepper = LegSteppers[i + 1];
+                leftStepper = LegSteppers[i];
                 i += 2;
             }
+            bodyPart.Init(leader, follower,  rightStepper, leftStepper);
         }
     }
 
@@ -68,10 +75,18 @@ public class CentipedeController : MonoBehaviour
         {
             Vector3 bodyUp = Vector3.zero;
             RaycastHit hit;
+
+            Vector3 rayDir = Body.up * -1 + 2.0f * Body.forward;
+            Debug.DrawLine(Body.position, Body.position + 3.0f * rayDir, Color.green);
+            if(Physics.Raycast(Body.position, rayDir.normalized, out hit, 10.0f))
+            {
+                bodyUp += hit.normal;
+            }
             if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
             {
                 bodyUp += hit.normal;
             }
+            bodyUp /= 2;
             bodyUp.Normalize();
 
             Vector3 bodyPos = hit.point + bodyUp * BodyHeightBase;
@@ -89,15 +104,20 @@ public class CentipedeController : MonoBehaviour
 
     IEnumerator LegUpdateCoroutine()
     {
+        int index = 0;
         while (true)
         {
             for(int i = 0; i < LegSteppers.Length; ++i)
             {
-                LegSteppers[i].Move();
-                if (LegSteppers[i].Moving)
+                if (index < 3)
                 {
-                    ++i;
+                    LegSteppers[i].Move();
+                    if (LegSteppers[i].Moving)
+                    {
+                        ++i;
+                    }
                 }
+                index = i % 2 == 0 ? index + 1 : 0;
             }
             yield return null;
         }
