@@ -23,7 +23,7 @@ public class LegStepper : MonoBehaviour
 
     private void Update()
     {
-        Move();
+        //Move();
     }
 
     public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround)
@@ -95,7 +95,7 @@ public class LegStepper : MonoBehaviour
         float overshootDistance = wantStepAtDistance * stepOvershootFraction;
         Vector3 overshootVector = towardHome * overshootDistance;
 
-        Vector3 raycastOrigin = homeTransform.position + overshootVector + homeTransform.up * 2f;
+        Vector3 raycastOrigin = homeTransform.position + overshootVector + homeTransform.up * 5f;
 
         if (Physics.Raycast(
             raycastOrigin,

@@ -25,6 +25,7 @@ public class LegStepperSetup : MonoBehaviour
             legStepperObject.name = "LegStepper_" + i;
             LegStepper legStepper = legStepperObject.AddComponent<LegStepper>();
             legStepper.Setup(home, wantStepAtDistance, moveDuration, stepOvershootFraction, groundRaycastMask, heightOverGround);
+            legStepper.transform.position = home.position;
 
             FabricIK ik = leg.transform.GetComponent<FabricIK>();
             ik.Target = legStepperObject.transform;
