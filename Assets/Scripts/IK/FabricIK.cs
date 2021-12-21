@@ -108,6 +108,9 @@ public class FabricIK : IKInterface
         }
         else
         {
+            for (int i = 0; i < Positions.Length - 1; i++)
+                Positions[i + 1] = Vector3.Lerp(Positions[i + 1], Positions[i] + StartDirectionSucc[i], SnapBackStrength);
+
             for (int iter = 0; iter < Iterations; ++iter)
             {
                 for (int i = Positions.Length - 1; i > 0; --i)
@@ -148,6 +151,10 @@ public class FabricIK : IKInterface
 
         for (int i = 0; i < Positions.Length; ++i)
         {
+            if (i == Positions.Length - 1)
+                Bones[i].rotation = Target.rotation * Quaternion.Inverse(StartRotationTarget) * StartRotationBone[i];
+            else
+                Bones[i].rotation = Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) * StartRotationBone[i];
             Bones[i].position = Positions[i];
         }
 
