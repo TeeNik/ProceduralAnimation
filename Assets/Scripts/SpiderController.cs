@@ -41,13 +41,13 @@ public class SpiderController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
-            //Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
-            rot = -RotationSpeed * Time.deltaTime;
+            Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+            //rot = -RotationSpeed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            //Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
-            rot = RotationSpeed * Time.deltaTime;
+            Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+            //rot = RotationSpeed * Time.deltaTime;
         }
     }
 
@@ -87,6 +87,7 @@ public class SpiderController : MonoBehaviour
                 if (Physics.Raycast(leg.Tip.position, leg.Tip.up.normalized * -1, out tipHit, 10.0f))
                 {
                     tipNormal = tipHit.normal;
+                    //bodyUp += tipHit.normal;
                 }
                 bodyUp += leg.Tip.up;
             }
@@ -110,26 +111,88 @@ public class SpiderController : MonoBehaviour
             var leftPoint = (frontLeftLegStepper.EndPoint + backLeftLegStepper.EndPoint) / 2;
             var rightPoint = (frontRightLegStepper.EndPoint + backRightLegStepper.EndPoint) / 2;
 
-            Vector3 forward = Body.transform.forward;
-            forward.y = (frontPoint - backPoint).y;
+            //Vector3 forward = Body.transform.forward;
+            //forward.y = (frontPoint - backPoint).y;
 
+            Vector3 forward = frontPoint - backPoint;
             Vector3 right = (rightPoint - leftPoint).normalized;
-            Vector3 up = Vector3.Cross(right, -(forward));
+            Vector3 up = Vector3.Cross(right, -forward);
 
-            if(Mathf.Abs(rot) > 0.0001f)
+            float x = Vector3.Angle(Body.forward, forward);
+            print("x: " + x);
+
+            if (Mathf.Abs(rot) > 0.0001f)
             {
                 forward = Quaternion.AngleAxis(rot * 100, up) * forward;
                 rot = 0.0f;
             }
 
             var look = Quaternion.LookRotation(forward, up);
+            look.eulerAngles = new Vector3(look.eulerAngles.x, Body.rotation.eulerAngles.y, look.eulerAngles.z);
+            //if (Mathf.Abs(rot) > 0.0001f)
+            //{
+            //    look = Quaternion.AngleAxis(rot * 100, up) * look;
+            //    rot = 0.0f;
+            //}
+
             Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
 
+            Debug.DrawLine(Body.position, Body.position + up * 5, Color.yellow);
+            Debug.DrawLine(Body.position, Body.position + bodyUp * 10, Color.cyan);
             Debug.DrawLine(frontPoint, backPoint, Color.red);
             Debug.DrawLine(rightPoint, leftPoint, Color.blue);
 
             yield return new WaitForFixedUpdate();
         }
     }
-    
+    /*
+    private IEnumerator AdjustBodyTransform()
+    {
+        while (true)
+        {
+            Vector3 tipCenter = Vector3.zero;
+            Vector3 bodyUp = Vector3.zero;
+
+            // Collect leg information to calculate body transform
+            foreach (Leg leg in Legs)
+            {
+                tipCenter += leg.Tip.position;
+
+                RaycastHit tipHit;
+                Vector3 tipNormal = Vector3.zero;
+                if (Physics.Raycast(leg.Tip.position, leg.Tip.up.normalized * -1, out tipHit, 10.0f))
+                {
+                    tipNormal = tipHit.normal;
+                }
+                bodyUp += leg.Tip.up;
+            }
+
+            RaycastHit hit;
+            if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
+            {
+                bodyUp += hit.normal;
+            }
+
+            tipCenter /= Legs.Length;
+            bodyUp.Normalize();
+
+            // Interpolate postition from old to new
+            Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
+            Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
+
+            // Calculate new body axis
+            Vector3 bodyRight = Vector3.Cross(bodyUp, Body.forward);
+            Vector3 bodyForward = Vector3.Cross(bodyRight, bodyUp);
+
+            // Interpolate rotation from old to new
+            Quaternion bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
+            Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, BodyAdjustRotationSpeed);
+
+
+            Debug.DrawLine(Body.position, Body.position + bodyUp * 10, Color.red);
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+    */
 }
