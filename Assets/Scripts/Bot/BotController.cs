@@ -14,6 +14,10 @@ public class BotController : MonoBehaviour
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
+    public Transform Camera;
+    float turnSmoothVelocity;
+    public float turnSmoothTime = 0.1f;
+
     void Start()
     {
         StartCoroutine(AdjustBodyTransform());
@@ -21,6 +25,7 @@ public class BotController : MonoBehaviour
 
     void Update()
     {
+        /*
         if (Input.GetKey(KeyCode.W))
         {
             Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.forward * 10, MovementSpeed * Time.deltaTime);
@@ -31,12 +36,31 @@ public class BotController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
-            Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+            Body.position = Vector3.MoveTowards(Body.position, Body.position - Body.right * 10, MovementSpeed * Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+            Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.right * 10, MovementSpeed * Time.deltaTime);
         }
+        */
+
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        if (direction.magnitude >= 0.1f)
+        {
+            //float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + Camera.eulerAngles.y;
+            float targetAngle = Camera.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            //Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+            Vector3 moveDir = Body.forward * vertical + Body.right * horizontal;
+            Body.position = Vector3.MoveTowards(Body.position, Body.position + moveDir.normalized, MovementSpeed * Time.deltaTime);
+        }
+
     }
 
     private IEnumerator AdjustBodyTransform()
@@ -54,7 +78,7 @@ public class BotController : MonoBehaviour
 
             bodyUp.Normalize();
 
-            Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
+            Vector3 bodyPos = hit.point + Vector3.up * BodyHeightBase;
             Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
 
             /*
