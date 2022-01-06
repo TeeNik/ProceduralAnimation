@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpiderController : MonoBehaviour
+public class SpiderController : BaseController
 {
     [Header("Legs")]
     [SerializeField] LegStepper frontLeftLegStepper;
@@ -31,7 +31,12 @@ public class SpiderController : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKey(KeyCode.W))
+        ProcessInput();
+    }
+
+    protected override void InternalProcessInput()
+    {
+        if (Input.GetKey(KeyCode.W))
         {
             Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.forward * 10, MovementSpeed * Time.deltaTime);
         }
@@ -42,12 +47,10 @@ public class SpiderController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
-            //rot = -RotationSpeed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.D))
         {
             Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
-            //rot = RotationSpeed * Time.deltaTime;
         }
     }
 
@@ -118,9 +121,6 @@ public class SpiderController : MonoBehaviour
             Vector3 right = (rightPoint - leftPoint).normalized;
             Vector3 up = Vector3.Cross(right, -forward);
 
-            float x = Vector3.Angle(Body.forward, forward);
-            print("x: " + x);
-
             if (Mathf.Abs(rot) > 0.0001f)
             {
                 forward = Quaternion.AngleAxis(rot * 100, up) * forward;
@@ -145,54 +145,4 @@ public class SpiderController : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
     }
-    /*
-    private IEnumerator AdjustBodyTransform()
-    {
-        while (true)
-        {
-            Vector3 tipCenter = Vector3.zero;
-            Vector3 bodyUp = Vector3.zero;
-
-            // Collect leg information to calculate body transform
-            foreach (Leg leg in Legs)
-            {
-                tipCenter += leg.Tip.position;
-
-                RaycastHit tipHit;
-                Vector3 tipNormal = Vector3.zero;
-                if (Physics.Raycast(leg.Tip.position, leg.Tip.up.normalized * -1, out tipHit, 10.0f))
-                {
-                    tipNormal = tipHit.normal;
-                }
-                bodyUp += leg.Tip.up;
-            }
-
-            RaycastHit hit;
-            if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
-            {
-                bodyUp += hit.normal;
-            }
-
-            tipCenter /= Legs.Length;
-            bodyUp.Normalize();
-
-            // Interpolate postition from old to new
-            Vector3 bodyPos = tipCenter + bodyUp * BodyHeightBase;
-            Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
-
-            // Calculate new body axis
-            Vector3 bodyRight = Vector3.Cross(bodyUp, Body.forward);
-            Vector3 bodyForward = Vector3.Cross(bodyRight, bodyUp);
-
-            // Interpolate rotation from old to new
-            Quaternion bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
-            Body.rotation = Quaternion.Slerp(Body.rotation, bodyRotation, BodyAdjustRotationSpeed);
-
-
-            Debug.DrawLine(Body.position, Body.position + bodyUp * 10, Color.red);
-
-            yield return new WaitForFixedUpdate();
-        }
-    }
-    */
 }
