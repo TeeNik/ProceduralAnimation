@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CentipedeController : MonoBehaviour
+public class CentipedeController : BaseController
 {
     public LegStepperSetup LegStepperSetup;
 
@@ -50,6 +50,11 @@ public class CentipedeController : MonoBehaviour
     }
 
     void Update()
+    {
+        ProcessInput();
+    }
+
+    protected override void InternalProcessInput()
     {
         if (Input.GetKey(KeyCode.W))
         {
