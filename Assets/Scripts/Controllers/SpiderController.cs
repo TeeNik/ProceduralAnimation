@@ -145,4 +145,9 @@ public class SpiderController : BaseController
             yield return new WaitForFixedUpdate();
         }
     }
+
+    public override Transform GetBodyTransform()
+    {
+        return Body;
+    }
 }

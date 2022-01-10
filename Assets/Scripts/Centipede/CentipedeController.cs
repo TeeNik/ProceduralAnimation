@@ -29,13 +29,13 @@ public class CentipedeController : BaseController
     {
         LegSteppers = LegStepperSetup.CreateLegSteppers();
 
-        CentipedeBodyPartNew[] bodyParts = GetComponentsInChildren<CentipedeBodyPartNew>();
+        CentipedeBodyPart[] bodyParts = GetComponentsInChildren<CentipedeBodyPart>();
         int i = 0;
         for (int j = 0; j < bodyParts.Length; j++)
         {
-            CentipedeBodyPartNew bodyPart = bodyParts[j];
-            CentipedeBodyPartNew leader = j > 0 ? bodyParts[j - 1] : null;
-            CentipedeBodyPartNew follower = j < bodyParts.Length - 1 ? bodyParts[j + 1] : null;
+            CentipedeBodyPart bodyPart = bodyParts[j];
+            CentipedeBodyPart leader = j > 0 ? bodyParts[j - 1] : null;
+            CentipedeBodyPart follower = j < bodyParts.Length - 1 ? bodyParts[j + 1] : null;
             LegStepper rightStepper = null;
             LegStepper leftStepper = null;
 
@@ -126,5 +126,10 @@ public class CentipedeController : BaseController
             }
             yield return null;
         }
+    }
+
+    public override Transform GetBodyTransform()
+    {
+        return Body;
     }
 }

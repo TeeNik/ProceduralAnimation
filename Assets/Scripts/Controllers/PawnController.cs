@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class PawnController : MonoBehaviour
 {
@@ -12,12 +13,16 @@ public class PawnController : MonoBehaviour
 
     private BaseController CurrentPawn = null;
 
-    public BaseController TestPawn;
-
     [SerializeField] private BaseController[] Pawns;
 
 
-    private BaseController RadioTarget;
+    private BaseController SwitchTarget = null;
+    private bool IsSwitching = false;
+    private float CurrentSwitchTime = 0.0f; 
+    private const float SwitchTime = 3.0f;
+
+    public Slider SwitchSlider;
+    public BotController Bot;
 
 
     private void Start()
@@ -27,18 +32,11 @@ public class PawnController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            TakeControl(TestPawn);
-        }
-
-
         if(Input.GetMouseButtonDown(0))
         {
-            if(CurrentPawn is BotController && RadioTarget != null)
+            if(CurrentPawn is BotController && SwitchTarget != null)
             {
-                TakeControl(RadioTarget);
-                RadioTarget = null;
+                IsSwitching = true;
             }
         }
         else if(Input.GetMouseButtonUp(1))
@@ -49,31 +47,59 @@ public class PawnController : MonoBehaviour
             }
         }
 
-        if(CurrentPawn is BotController)
+        HighlightSwitchTarget();
+
+        if(IsSwitching)
+        {
+            CurrentSwitchTime += Time.deltaTime;
+
+            if(CurrentSwitchTime >= SwitchTime)
+            {
+                CurrentSwitchTime = 0.0f;
+                SwitchPawns();
+                IsSwitching = false;
+            }
+
+            Bot.SetSwitchProgress(CurrentSwitchTime / SwitchTime);
+        }
+
+    }
+
+    private void SwitchPawns()
+    {
+        CurrentPawn.SetRippleActive(false);
+        SwitchTarget.SetRippleActive(false);
+        TakeControl(SwitchTarget);
+        SwitchTarget = null;
+    }
+
+    private void HighlightSwitchTarget()
+    {
+        if (CurrentPawn is BotController)
         {
             BaseController closest = FindClosestVisiblePawnsInRadius(CurrentPawn, Radius);
             print(closest);
-            if(closest != null)
+            if (closest != null)
             {
-                if(RadioTarget == null)
+                if (SwitchTarget == null)
                 {
-                    CurrentPawn.Ripple_FX.gameObject.SetActive(true);
+                    CurrentPawn.SetRippleActive(true);
                 }
-                else if(closest != RadioTarget)
+                else if (closest != SwitchTarget)
                 {
-                    RadioTarget.Ripple_FX.gameObject.SetActive(false);
+                    SwitchTarget.SetRippleActive(false);
                 }
-                RadioTarget = closest;
-                RadioTarget.Ripple_FX.gameObject.SetActive(true);
+                SwitchTarget = closest;
+                SwitchTarget.SetRippleActive(true);
             }
             else if (closest == null)
             {
-                if (RadioTarget != null)
+                if (SwitchTarget != null)
                 {
-                    RadioTarget.Ripple_FX.gameObject.SetActive(false);
+                    SwitchTarget.SetRippleActive(false);
                 }
-                RadioTarget = null;
-                CurrentPawn.Ripple_FX.gameObject.SetActive(false);
+                SwitchTarget = null;
+                CurrentPawn.SetRippleActive(false);
             }
         }
     }
@@ -86,10 +112,10 @@ public class PawnController : MonoBehaviour
         {
             if(pawn != player)
             {
-                float dist = Vector3.SqrMagnitude(player.transform.position - pawn.transform.position);
+                float dist = Vector3.SqrMagnitude(player.GetBodyTransform().position - pawn.GetBodyTransform().position);
                 if (dist < radius * radius)
                 {
-                    if (Utils.IsTargetVisible(Camera, pawn.gameObject))
+                    if (Utils.IsTargetVisible(Camera, pawn.GetBodyTransform().gameObject))
                     {
                         if(dist < minDist)
                         {

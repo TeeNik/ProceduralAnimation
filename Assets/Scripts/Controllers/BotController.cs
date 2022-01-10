@@ -19,6 +19,13 @@ public class BotController : BaseController
     float turnSmoothVelocity;
     public float turnSmoothTime = 0.1f;
 
+    [Header("Battery")]
+    public Material NetralMaterial;
+    public Material SwitchMaterial;
+    public int NumberOfSlots = 6;
+    public Renderer Renderer;
+
+
     void Start()
     {
         StartCoroutine(AdjustBodyTransform());
@@ -27,6 +34,17 @@ public class BotController : BaseController
     void Update()
     {
         ProcessInput();
+    }
+
+    public void SetSwitchProgress(float value)
+    {
+        int highlightedSlots = (int)(value * NumberOfSlots);
+        Material[] materials = Renderer.materials;
+        for(int i = 0; i < NumberOfSlots; ++i)
+        {
+            materials[NumberOfSlots - i] = i < highlightedSlots ? SwitchMaterial : NetralMaterial;
+        }
+        Renderer.materials = materials;
     }
 
     private IEnumerator AdjustBodyTransform()
@@ -63,5 +81,10 @@ public class BotController : BaseController
 
         Vector3 lean = new Vector3(15.0f * vertical, targetAngle, -15.0f * horizontal);
         Model.rotation = Quaternion.RotateTowards(Model.rotation, Quaternion.Euler(lean), BodyAdjustRotationSpeed * Time.deltaTime);
+    }
+
+    public override Transform GetBodyTransform()
+    {
+        return Body;
     }
 }
