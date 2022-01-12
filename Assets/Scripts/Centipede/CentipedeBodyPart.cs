@@ -4,82 +4,80 @@ using UnityEngine;
 
 public class CentipedeBodyPart : MonoBehaviour
 {
-    public Transform Leader;
+    public CentipedeBodyPart Leader;
     public float DistanceToLeader;
     public CentipedeBodyPart Follower;
     public bool IsHead = false;
-
-    public float MoveDistThreshold = 0.05f;
     public float BodyHeightBase = 0.5f;
 
-    private Vector3 PrevPosition;
+    public Transform FrontPivot;
+    public Transform BackPivot;
+
+    public float FollowSpeed = 5.0f;
 
     [SerializeField] LegStepper LeftLegStepper;
     [SerializeField] LegStepper RightLegStepper;
 
-
-    void Awake()
+    public void Init(CentipedeBodyPart leader, CentipedeBodyPart follower, LegStepper rightLegStepper, LegStepper leftLegStepper)
     {
-        if(!IsHead)
+        Leader = leader;
+        Follower = follower;
+        RightLegStepper = rightLegStepper;
+        LeftLegStepper = leftLegStepper;
+    }
+
+    private void Awake()
+    {
+        UpdateHeight();
+    }
+
+    void UpdateHeight()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.up * -1, out hit, 100.0f))
         {
-            DistanceToLeader = Vector3.Distance(transform.position, Leader.transform.position);
+            var heightDiff = Vector3.Distance(transform.position, hit.point);
+            if (heightDiff > BodyHeightBase)
+            {
+                transform.position = hit.point + hit.normal * BodyHeightBase;
+            }
         }
-        PrevPosition = transform.position;
     }
 
     private void Update()
     {
-        if(IsHead)
+        if(!IsHead)
         {
-            Vector3 newPos = transform.position;
-            if ((newPos - PrevPosition).sqrMagnitude > MoveDistThreshold * MoveDistThreshold)
+            Vector3 dir = Leader.BackPivot.position - FrontPivot.position;
+            float dist = dir.magnitude;
+
+            if(dist > DistanceToLeader)
             {
-                float moveDist = (newPos - PrevPosition).magnitude;
-                if (Follower != null)
+                //float speed = Mathf.Min(5.0f, dist / DistanceToLeader);
+                float speed = Mathf.Min(FollowSpeed * Time.deltaTime, dist * 0.95f); ;
+                transform.position = Vector3.MoveTowards(transform.position, Leader.BackPivot.position, speed);
+            }
+
+            if (Vector3.Angle(dir, FrontPivot.forward) > 1.0f)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(dir, transform.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 1 * Time.deltaTime);
+            }
+
+            var forward = dir.normalized;
+            var up = Vector3.Cross(forward, RightLegStepper.EndPoint - LeftLegStepper.EndPoint);
+            Quaternion rot = Quaternion.LookRotation(forward, up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rot, 0.05f);
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.up * -1, out hit, 10.0f))
+            {
+                var heightDiff = Vector3.Distance(transform.position, hit.point);
+                if (heightDiff > BodyHeightBase)
                 {
-                    Follower.UpdateBodyPart(PrevPosition, moveDist);
+                    Vector3 position = transform.position + transform.up * (BodyHeightBase - heightDiff);
+                    transform.position = Vector3.Lerp(transform.position, position, 0.05f);
                 }
-                PrevPosition = newPos;
-            }
-        }
-    }
-
-    public void InitLegSteppers(LegStepper rightLegStepper, LegStepper leftLegStepper)
-    {
-        LeftLegStepper = leftLegStepper;
-        RightLegStepper = rightLegStepper;
-    }
-
-    void UpdateBodyPart(Vector3 prevPos, float moveDist)
-    {
-        Vector3 forward = transform.forward;
-
-        if(Vector3.Distance(transform.position, Leader.position) > DistanceToLeader)
-        {
-            Vector3 moveDir = (prevPos - transform.position).normalized;
-            PrevPosition = transform.position;
-            transform.position += moveDir * moveDist;
-
-            forward = Leader.transform.forward;
-
-            if (Follower != null)
-            {
-                Follower.UpdateBodyPart(PrevPosition, moveDist);
-            }
-        }
-
-        var up = Vector3.Cross(forward, RightLegStepper.EndPoint - LeftLegStepper.EndPoint);
-        Quaternion rot = Quaternion.LookRotation(forward, up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, 0.05f);
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.up * -1, out hit, 10.0f))
-        {
-            var heightDiff = Vector3.Distance(transform.position, hit.point);
-            if(heightDiff < BodyHeightBase)
-            {
-                Vector3 position = transform.position + transform.up * (BodyHeightBase - heightDiff);
-                transform.position = Vector3.Lerp(transform.position, position, 0.05f);
             }
         }
     }

@@ -78,7 +78,6 @@ public class PawnController : MonoBehaviour
         if (CurrentPawn is BotController)
         {
             BaseController closest = FindClosestVisiblePawnsInRadius(CurrentPawn, Radius);
-            print(closest);
             if (closest != null)
             {
                 if (SwitchTarget == null)

@@ -9,15 +9,14 @@ public class BotController : BaseController
     [Header("Movement")]
     public Transform Body;
     public float MovementSpeed;
-    public float RotationSpeed;
 
     public float BodyHeightBase = 0.2f;
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
     public Transform Camera;
-    float turnSmoothVelocity;
-    public float turnSmoothTime = 0.1f;
+    public float TurnSmoothTime = 0.1f;
+    private float TurnSmoothVelocity;
 
     [Header("Battery")]
     public Material NetralMaterial;
@@ -72,7 +71,7 @@ public class BotController : BaseController
         if (direction.magnitude >= 0.1f)
         {
             targetAngle = Camera.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref TurnSmoothVelocity, TurnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Body.forward * vertical + Body.right * horizontal;
