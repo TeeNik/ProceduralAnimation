@@ -109,23 +109,35 @@ public class CentipedeController : BaseController
 
     IEnumerator LegUpdateCoroutine()
     {
-        int index = 0;
         while (true)
         {
-            for(int i = 0; i < LegSteppers.Length; ++i)
+            for (int i = 0; i < LegSteppers.Length; ++i)
             {
-                if (index < 3)
+                if (!IsLegsAheadMoving(4, i))
                 {
                     LegSteppers[i].Move();
-                    if (LegSteppers[i].Moving)
-                    {
-                        ++i;
-                    }
                 }
-                index = i % 2 == 0 ? index + 1 : 0;
             }
+
             yield return null;
         }
+
+    }
+
+    bool IsLegsAheadMoving(int numOfLegs, int index)
+    {
+        if(index < numOfLegs)
+        {
+            return false;
+        }
+        for(int i = 1; i <= numOfLegs; ++i)
+        {
+            if(!LegSteppers[index - i].Moving)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public override Transform GetBodyTransform()
