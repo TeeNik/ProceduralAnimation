@@ -1,28 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.UI;
 
 public class PawnController : MonoBehaviour
 {
-    public BaseController InitialPawn;
+    public Pawn InitialPawn;
     public CinemachineFreeLook CinemachineCamera;
     public Camera Camera;
     public float Radius = 10.0f;
 
-    private BaseController CurrentPawn = null;
+    private Pawn CurrentPawn = null;
 
-    [SerializeField] private BaseController[] Pawns;
+    [SerializeField] private Pawn[] Pawns;
 
 
-    private BaseController SwitchTarget = null;
+    private Pawn SwitchTarget = null;
     private bool IsSwitching = false;
     private float CurrentSwitchTime = 0.0f; 
     private const float SwitchTime = 3.0f;
 
-    public Slider SwitchSlider;
-    public BotController Bot;
+    public Bot Bot;
 
 
     private void Start()
@@ -34,14 +30,14 @@ public class PawnController : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if(CurrentPawn is BotController && SwitchTarget != null)
+            if(CurrentPawn is Bot && SwitchTarget != null)
             {
                 IsSwitching = true;
             }
         }
         else if(Input.GetMouseButtonUp(1))
         {
-            if (!(CurrentPawn is BotController))
+            if (!(CurrentPawn is Bot))
             {
                 TakeControl(InitialPawn);
             }
@@ -75,9 +71,9 @@ public class PawnController : MonoBehaviour
 
     private void HighlightSwitchTarget()
     {
-        if (CurrentPawn is BotController)
+        if (CurrentPawn is Bot)
         {
-            BaseController closest = FindClosestVisiblePawnsInRadius(CurrentPawn, Radius);
+            Pawn closest = FindClosestVisiblePawnsInRadius(CurrentPawn, Radius);
             if (closest != null)
             {
                 if (SwitchTarget == null)
@@ -103,10 +99,10 @@ public class PawnController : MonoBehaviour
         }
     }
 
-    private BaseController FindClosestVisiblePawnsInRadius(BaseController player, float radius)
+    private Pawn FindClosestVisiblePawnsInRadius(Pawn player, float radius)
     {
         float minDist = float.MaxValue;
-        BaseController target = null;
+        Pawn target = null;
         foreach (var pawn in Pawns)
         {
             if(pawn != player)
@@ -128,7 +124,7 @@ public class PawnController : MonoBehaviour
         return target;
     }
 
-    private void TakeControl(BaseController controller)
+    private void TakeControl(Pawn controller)
     {
         if(CurrentPawn)
         {

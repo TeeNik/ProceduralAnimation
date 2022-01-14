@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CentipedeController : BaseController
+public class CentipedeLegsController : MonoBehaviour
 {
     public LegStepperSetup LegStepperSetup;
 
     [Header("Movement")]
     public Transform Body;
-    public float MovementSpeed;
-    public float RotationSpeed;
-
     public float BodyHeightBase = 0.2f;
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
@@ -49,30 +46,6 @@ public class CentipedeController : BaseController
         }
     }
 
-    void Update()
-    {
-        ProcessInput();
-    }
-
-    protected override void InternalProcessInput()
-    {
-        if (Input.GetKey(KeyCode.W))
-        {
-            Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.forward * 10, MovementSpeed * Time.deltaTime);
-        }
-        //else if (Input.GetKey(KeyCode.S))
-        //{
-        //    Body.position = Vector3.MoveTowards(Body.position, Body.position - Body.forward * 10, MovementSpeed * Time.deltaTime);
-        //}
-        if (Input.GetKey(KeyCode.A))
-        {
-            Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
-        }
-    }
 
     private IEnumerator AdjustBodyTransform()
     {
@@ -138,10 +111,5 @@ public class CentipedeController : BaseController
             }
         }
         return true;
-    }
-
-    public override Transform GetBodyTransform()
-    {
-        return Body;
     }
 }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
-public class BotController : BaseController
+public class Bot : Pawn
 {
     public Transform Model;
 
@@ -23,7 +25,6 @@ public class BotController : BaseController
     public Material SwitchMaterial;
     public int NumberOfSlots = 6;
     public Renderer Renderer;
-
 
     void Start()
     {

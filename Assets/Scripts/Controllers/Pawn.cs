@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BaseController : MonoBehaviour
+public abstract class Pawn : MonoBehaviour
 {
     public bool IsUnderControl = false;
     public Transform CameraPoint;
