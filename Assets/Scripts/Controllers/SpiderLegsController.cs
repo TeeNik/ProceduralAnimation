@@ -86,10 +86,10 @@ public class SpiderLegsController : MonoBehaviour
             look.eulerAngles = new Vector3(look.eulerAngles.x, Body.rotation.eulerAngles.y, look.eulerAngles.z);
             Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
 
-            Debug.DrawLine(Body.position, Body.position + up * 5, Color.yellow);
-            Debug.DrawLine(Body.position, Body.position + bodyUp * 10, Color.cyan);
-            Debug.DrawLine(frontPoint, backPoint, Color.red);
-            Debug.DrawLine(rightPoint, leftPoint, Color.blue);
+            //Debug.DrawLine(Body.position, Body.position + up * 5, Color.yellow);
+            //Debug.DrawLine(Body.position, Body.position + bodyUp * 10, Color.cyan);
+            //Debug.DrawLine(frontPoint, backPoint, Color.red);
+            //Debug.DrawLine(rightPoint, leftPoint, Color.blue);
 
             yield return new WaitForFixedUpdate();
         }

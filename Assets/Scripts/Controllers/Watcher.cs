@@ -7,12 +7,15 @@ using UnityEngine;
 public class Watcher : Pawn
 {
     [Header("Movement")]
-    public Transform Body;
-    public float MovementSpeed;
-    public float RotationSpeed;
+    [SerializeField] private Transform Body;
+    [SerializeField] private float MovementSpeed;
+    [SerializeField] private float RotationSpeed;
 
     [Header("Light")]
     [SerializeField] private Transform Spotlight;
+
+    [Header("AI")]
+    WatcherAIController AI;
 
     private void Start()
     {
@@ -24,6 +27,13 @@ public class Watcher : Pawn
         ProcessInput();
     }
 
+    protected override void InternalOnControlChanged(bool IsUnderPlayerControl)
+    {
+        if(AI)
+        {
+            AI.OnControlChanged(IsUnderPlayerControl);
+        }
+    }
     protected override void InternalProcessInput()
     {
         if (Input.GetKey(KeyCode.W))
@@ -43,23 +53,28 @@ public class Watcher : Pawn
             Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
         }
     }
-
+    public override Transform GetBodyTransform()
+    {
+        return Body;
+    }
     public void PlaySpotlightAnimation(Action onAnimFinished)
     {
         Spotlight.gameObject.SetActive(true);
 
-        const float duration = 1.0f;
+        const float duration = 2.0f;
         const int numOfLoops = 10;
 
-        Spotlight.rotation = Quaternion.AngleAxis(15.0f, Spotlight.right);
-        Spotlight.DORotateQuaternion(Quaternion.AngleAxis(-15.0f, Spotlight.right), duration).SetEase(Ease.Linear).SetLoops(numOfLoops, LoopType.Yoyo).OnComplete(() =>
+        float value = 0.0f;
+        DOTween.To(() => value, x => { 
+            value = x;
+            Vector3 lean = new Vector3(15.0f * Mathf.Sin(x), Body.transform.eulerAngles.y, Body.transform.eulerAngles.z);
+            Spotlight.rotation = Quaternion.RotateTowards(Spotlight.rotation, Quaternion.Euler(lean), 1.0f);
+
+        }, Mathf.PI * 2, duration).SetEase(Ease.Linear).SetLoops(numOfLoops).OnComplete(() =>
         {
             Spotlight.gameObject.SetActive(false);
             onAnimFinished?.Invoke();
         });
     }
-    public override Transform GetBodyTransform()
-    {
-        return Body;
-    }
+
 }

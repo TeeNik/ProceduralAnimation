@@ -3,7 +3,7 @@ using Cinemachine;
 
 public class PawnController : MonoBehaviour
 {
-    public Pawn InitialPawn;
+    public Bot Bot;
     public CinemachineFreeLook CinemachineCamera;
     public Camera Camera;
     public float Radius = 10.0f;
@@ -12,18 +12,15 @@ public class PawnController : MonoBehaviour
 
     [SerializeField] private Pawn[] Pawns;
 
-
     private Pawn SwitchTarget = null;
     private bool IsSwitching = false;
     private float CurrentSwitchTime = 0.0f; 
     private const float SwitchTime = 3.0f;
 
-    public Bot Bot;
-
 
     private void Start()
     {
-        TakeControl(InitialPawn);
+        TakeControl(Bot);
     }
 
     private void Update()
@@ -39,7 +36,7 @@ public class PawnController : MonoBehaviour
         {
             if (!(CurrentPawn is Bot))
             {
-                TakeControl(InitialPawn);
+                TakeControl(Bot);
             }
         }
 
@@ -48,17 +45,15 @@ public class PawnController : MonoBehaviour
         if(IsSwitching)
         {
             CurrentSwitchTime += Time.deltaTime;
+            Bot.SetSwitchProgress(CurrentSwitchTime / SwitchTime);
 
-            if(CurrentSwitchTime >= SwitchTime)
+            if (CurrentSwitchTime >= SwitchTime)
             {
                 CurrentSwitchTime = 0.0f;
                 SwitchPawns();
                 IsSwitching = false;
             }
-
-            Bot.SetSwitchProgress(CurrentSwitchTime / SwitchTime);
         }
-
     }
 
     private void SwitchPawns()
@@ -128,10 +123,10 @@ public class PawnController : MonoBehaviour
     {
         if(CurrentPawn)
         {
-            CurrentPawn.IsUnderControl = false;
+            CurrentPawn.OnControlChanged(false);
         }
-        controller.IsUnderControl = true;
         CurrentPawn = controller;
+        CurrentPawn.OnControlChanged(true);
 
         CinemachineCamera.Follow = CurrentPawn.CameraPoint;
         CinemachineCamera.LookAt = CurrentPawn.CameraPoint;

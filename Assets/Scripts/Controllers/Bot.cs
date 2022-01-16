@@ -6,10 +6,9 @@ using DG.Tweening;
 
 public class Bot : Pawn
 {
-    public Transform Model;
-
     [Header("Movement")]
     public Transform Body;
+    public Transform Model;
     public float MovementSpeed;
 
     public float BodyHeightBase = 0.2f;
@@ -20,11 +19,14 @@ public class Bot : Pawn
     public float TurnSmoothTime = 0.1f;
     private float TurnSmoothVelocity;
 
-    [Header("Battery")]
+    [Header("Visuals")]
     public Material NetralMaterial;
     public Material SwitchMaterial;
     public int NumberOfSlots = 6;
-    public Renderer Renderer;
+    public Renderer BatteryRenderer;
+    public Renderer EyeRenderer;
+
+    private Tween IdleTween;
 
     void Start()
     {
@@ -38,13 +40,7 @@ public class Bot : Pawn
 
     public void SetSwitchProgress(float value)
     {
-        int highlightedSlots = (int)(value * NumberOfSlots);
-        Material[] materials = Renderer.materials;
-        for(int i = 0; i < NumberOfSlots; ++i)
-        {
-            materials[NumberOfSlots - i] = i < highlightedSlots ? SwitchMaterial : NetralMaterial;
-        }
-        Renderer.materials = materials;
+        UpdateHighlightMaterials(value);
     }
 
     private IEnumerator AdjustBodyTransform()
@@ -86,5 +82,44 @@ public class Bot : Pawn
     public override Transform GetBodyTransform()
     {
         return Body;
+    }
+
+    protected override void InternalOnControlChanged(bool IsUnderPlayerControl)
+    {
+        if(!IsUnderPlayerControl)
+        {
+            Model.eulerAngles = Body.eulerAngles;
+
+            float value = 0.0f;
+            float height = BodyHeightBase;
+            IdleTween = DOTween.To(() => value, x =>
+            {
+                value = x;
+                BodyHeightBase = height + 0.5f * Mathf.Sin(x);
+            }, Mathf.PI * 2, 2.0f).SetEase(Ease.Linear).SetLoops(-1).OnKill(() => BodyHeightBase = height);
+        }
+        else
+        {
+            IdleTween?.Kill();
+            UpdateHighlightMaterials(0.0f);
+        }
+    }
+
+    private void UpdateHighlightMaterials(float value)
+    {
+        int highlightedSlots = (int)(value * NumberOfSlots);
+        Material[] materials = BatteryRenderer.materials;
+        for (int i = 0; i < NumberOfSlots; ++i)
+        {
+            materials[NumberOfSlots - i] = i < highlightedSlots ? SwitchMaterial : NetralMaterial;
+        }
+        BatteryRenderer.materials = materials;
+
+        if(highlightedSlots == 0 || highlightedSlots == NumberOfSlots)
+        {
+            materials = EyeRenderer.materials;
+            materials[1] = highlightedSlots == 0 ? NetralMaterial : SwitchMaterial;
+            EyeRenderer.materials = materials;
+        }
     }
 }
