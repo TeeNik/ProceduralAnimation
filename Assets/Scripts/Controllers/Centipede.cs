@@ -8,10 +8,21 @@ public class Centipede : Pawn
     public Transform Body;
     public float MovementSpeed;
     public float RotationSpeed;
+    
+    [Header("AI")]
+    CentipedeAIController AI;
+
+    private CentipedeBodyPart[] BodyParts;
+
+    private void Awake()
+    {
+        BodyParts = GetComponentsInChildren<CentipedeBodyPart>();
+    }
 
     void Update()
     {
         ProcessInput();
+        UpdateBodyParts();
     }
 
     protected override void InternalProcessInput()
@@ -19,18 +30,36 @@ public class Centipede : Pawn
         if (Input.GetKey(KeyCode.W))
         {
             Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.forward * 10, MovementSpeed * Time.deltaTime);
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+            }
         }
         //else if (Input.GetKey(KeyCode.S))
         //{
         //    Body.position = Vector3.MoveTowards(Body.position, Body.position - Body.forward * 10, MovementSpeed * Time.deltaTime);
         //}
-        if (Input.GetKey(KeyCode.A))
+
+    }
+
+    private void UpdateBodyParts()
+    {
+        foreach (var bodyPart in BodyParts)
         {
-            Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+            bodyPart.UpdatePosition();
         }
-        else if (Input.GetKey(KeyCode.D))
+    }
+
+    protected override void InternalOnControlChanged(bool IsUnderPlayerControl)
+    {
+        if (AI)
         {
-            Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+            AI.OnControlChanged(IsUnderPlayerControl);
         }
     }
 
