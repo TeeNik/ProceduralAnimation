@@ -215,12 +215,16 @@ MonoBehaviour:
   Model: {fileID: 4479519441727603810}
   Body: {fileID: 4152541300430430593}
   MovementSpeed: 20
-  RotationSpeed: 60
   BodyHeightBase: 4
   BodyAdjustSpeed: 0.25
   BodyAdjustRotationSpeed: 50
   Camera: {fileID: 0}
-  turnSmoothTime: 0.1
+  TurnSmoothTime: 0.1
+  NetralMaterial: {fileID: 2100000, guid: ff2585e501c3f6a47be646c7691ef6f9, type: 2}
+  SwitchMaterial: {fileID: 2100000, guid: 79e38c3987e5edc4883583e94fbdcb78, type: 2}
+  NumberOfSlots: 6
+  BatteryRenderer: {fileID: 433688178540751622}
+  EyeRenderer: {fileID: 7445642077283802384}
 --- !u!1 &4064793607402809671
 GameObject:
   m_ObjectHideFlags: 0
