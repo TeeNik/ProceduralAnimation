@@ -191,7 +191,6 @@ public class FabricIK : IKInterface
 
     private Quaternion GetRotationRootSpace(Transform current)
     {
-        //inverse(after) * before => rot: before -> after
         if (Root == null)
             return current.rotation;
         else
@@ -205,7 +204,7 @@ public class FabricIK : IKInterface
         else
             current.rotation = Root.rotation * rotation;
     }
-
+    /*
     private void OnDrawGizmos()
     {
         var current = transform.GetChild(0);
@@ -220,4 +219,5 @@ public class FabricIK : IKInterface
             current = current.GetChild(0);
         }
     }
+    */
 }

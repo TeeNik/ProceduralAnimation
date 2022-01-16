@@ -6,19 +6,18 @@ using UnityEngine;
 public class SpiderLegsController : MonoBehaviour
 {
     [Header("Legs")]
-    [SerializeField] LegStepper frontLeftLegStepper;
-    [SerializeField] LegStepper frontRightLegStepper;
-    [SerializeField] LegStepper backLeftLegStepper;
-    [SerializeField] LegStepper backRightLegStepper;
+    [SerializeField] private LegStepper frontLeftLegStepper;
+    [SerializeField] private LegStepper frontRightLegStepper;
+    [SerializeField] private LegStepper backLeftLegStepper;
+    [SerializeField] private LegStepper backRightLegStepper;
 
     [SerializeField] Leg[] Legs;
 
     [Header("Movement")]
-    public Transform Body;
-
-    public float BodyHeightBase = 0.2f;
-    public float BodyAdjustSpeed = 0.05f;
-    public float BodyAdjustRotationSpeed = 0.05f;
+    [SerializeField] private Transform Body;
+    [SerializeField] private float BodyHeightBase = 0.2f;
+    [SerializeField] private float BodyAdjustSpeed = 0.05f;
+    [SerializeField] private float BodyAdjustRotationSpeed = 0.05f;
 
     void Awake()
     {

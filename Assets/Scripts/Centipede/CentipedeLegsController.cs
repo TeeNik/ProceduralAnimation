@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CentipedeLegsController : MonoBehaviour
 {
-    public LegStepperSetup LegStepperSetup;
+    [SerializeField] private LegStepperSetup LegStepperSetup;
 
     [Header("Movement")]
-    public Transform Body;
-    public float BodyHeightBase = 0.2f;
-    public float BodyAdjustSpeed = 0.05f;
-    public float BodyAdjustRotationSpeed = 0.05f;
+    [SerializeField] private Transform Body;
+    [SerializeField] private float BodyHeightBase = 0.2f;
+    [SerializeField] private float BodyAdjustSpeed = 0.05f;
+    [SerializeField] private float BodyAdjustRotationSpeed = 0.05f;
 
     private LegStepper[] LegSteppers;
 

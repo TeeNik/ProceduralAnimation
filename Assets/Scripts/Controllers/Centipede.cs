@@ -5,12 +5,12 @@ using UnityEngine;
 public class Centipede : Pawn
 {
     [Header("Movement")]
-    public Transform Body;
-    public float MovementSpeed;
-    public float RotationSpeed;
+    [SerializeField] private Transform Body;
+    [SerializeField] private float MovementSpeed;
+    [SerializeField] private float RotationSpeed;
     
     [Header("AI")]
-    CentipedeAIController AI;
+    [SerializeField] private CentipedeAIController AI;
 
     private CentipedeBodyPart[] BodyParts;
 

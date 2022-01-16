@@ -7,10 +7,7 @@ public class Leg : MonoBehaviour
 {
     public MeshFilter MeshFilter;
     public IKInterface IK;
-
     public Transform Tip;
-
-    public LegOrientation[] LegOrientations;
     public bool UseMeshGeneration = true;
 
     void Awake()
@@ -24,27 +21,6 @@ public class Leg : MonoBehaviour
         {
             GenerateMeshForLeg();
         } 
-        else
-        {
-            UpdateLegOrientation();
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        /*
-        var current = transform;
-        while (current.childCount > 0)
-        {
-            current = current.GetChild(0);
-            var scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
-            Handles.matrix = Matrix4x4.TRS(current.position,
-                Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position),
-                new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
-            Handles.color = Color.green;
-            Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
-        }
-        */
     }
 
     private void GenerateMeshForLeg()
@@ -61,13 +37,5 @@ public class Leg : MonoBehaviour
         Mesh mesh = new Mesh();
         MeshCreator.CreateMesh(ref mesh, pos.ToArray(), 30, 0.1f);
         MeshFilter.sharedMesh = mesh;
-    }
-
-    private void UpdateLegOrientation()
-    {
-        for(int i = 0; i < LegOrientations.Length; ++i)
-        {
-            LegOrientations[i].UpdateOrientation();
-        }
     }
 }

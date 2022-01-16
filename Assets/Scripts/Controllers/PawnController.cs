@@ -3,15 +3,13 @@ using Cinemachine;
 
 public class PawnController : MonoBehaviour
 {
-    public Bot Bot;
-    public CinemachineFreeLook CinemachineCamera;
-    public Camera Camera;
-    public float Radius = 10.0f;
-
-    private Pawn CurrentPawn = null;
-
+    [SerializeField] private Bot Bot;
+    [SerializeField] private CinemachineFreeLook CinemachineCamera;
+    [SerializeField] private Camera Camera;
+    [SerializeField] private float Radius = 10.0f;
     [SerializeField] private Pawn[] Pawns;
 
+    private Pawn CurrentPawn = null;
     private Pawn SwitchTarget = null;
     private bool IsSwitching = false;
     private float CurrentSwitchTime = 0.0f; 

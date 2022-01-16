@@ -7,26 +7,26 @@ using DG.Tweening;
 public class Bot : Pawn
 {
     [Header("Movement")]
-    public Transform Body;
-    public Transform Model;
-    public float MovementSpeed;
+    [SerializeField] private Transform Body;
+    [SerializeField] private Transform Model;
+    [SerializeField] private float MovementSpeed;
 
-    public float BodyHeightBase = 0.2f;
-    public float BodyAdjustSpeed = 0.05f;
-    public float BodyAdjustRotationSpeed = 0.05f;
+    [SerializeField] private float BodyHeightBase = 0.2f;
+    [SerializeField] private float BodyAdjustSpeed = 0.05f;
+    [SerializeField] private float BodyAdjustRotationSpeed = 0.05f;
 
-    public Transform Camera;
-    public float TurnSmoothTime = 0.1f;
-    private float TurnSmoothVelocity;
+    [SerializeField] private Transform Camera;
+    [SerializeField] private float TurnSmoothTime = 0.1f;
 
     [Header("Visuals")]
-    public Material NetralMaterial;
-    public Material SwitchMaterial;
-    public int NumberOfSlots = 6;
-    public Renderer BatteryRenderer;
-    public Renderer EyeRenderer;
+    [SerializeField] private Material NetralMaterial;
+    [SerializeField] private Material SwitchMaterial;
+    [SerializeField] private int NumberOfSlots = 6;
+    [SerializeField] private Renderer BatteryRenderer;
+    [SerializeField] private Renderer EyeRenderer;
 
     private Tween IdleTween;
+    private float TurnSmoothVelocity;
 
     void Start()
     {
