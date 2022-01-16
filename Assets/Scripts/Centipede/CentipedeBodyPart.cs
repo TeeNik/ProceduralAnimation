@@ -44,7 +44,7 @@ public class CentipedeBodyPart : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void UpdatePosition()
     {
         if(!IsHead)
         {

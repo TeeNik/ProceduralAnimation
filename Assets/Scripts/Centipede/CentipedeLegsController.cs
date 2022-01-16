@@ -41,7 +41,12 @@ public class CentipedeLegsController : MonoBehaviour
                 rightStepper = LegSteppers[i + 1];
                 leftStepper = LegSteppers[i];
                 i += 2;
+
+                ConnectorOrientation connector = leader.GetComponentInChildren<ConnectorOrientation>();
+                connector.PointA = leader.BackPivot;
+                connector.PointB = bodyPart.FrontPivot;
             }
+
             bodyPart.Init(leader, follower,  rightStepper, leftStepper);
         }
     }
