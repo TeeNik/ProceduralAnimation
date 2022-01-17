@@ -10,6 +10,7 @@ public class LegStepperSetup : MonoBehaviour
 
     [SerializeField] LayerMask groundRaycastMask = ~0;
     [SerializeField] float heightOverGround = 0.0f;
+    [SerializeField] float stepHeight = 0.5f;
 
     public LegStepper[] CreateLegSteppers()
     {
@@ -24,7 +25,7 @@ public class LegStepperSetup : MonoBehaviour
             GameObject legStepperObject = Instantiate(legStepperGO, transform);
             legStepperObject.name = "LegStepper_" + i;
             LegStepper legStepper = legStepperObject.AddComponent<LegStepper>();
-            legStepper.Setup(home, wantStepAtDistance, moveDuration, stepOvershootFraction, groundRaycastMask, heightOverGround);
+            legStepper.Setup(home, wantStepAtDistance, moveDuration, stepOvershootFraction, groundRaycastMask, heightOverGround, stepHeight);
             legStepper.transform.position = home.position;
 
             FabricIK ik = leg.transform.GetComponent<FabricIK>();

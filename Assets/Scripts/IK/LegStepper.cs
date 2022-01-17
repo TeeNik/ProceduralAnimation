@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,7 @@ public class LegStepper : MonoBehaviour
 
     [SerializeField] LayerMask groundRaycastMask = ~0;
     [SerializeField] float heightOverGround = 0.0f;
+    [SerializeField] float stepHeight = 0.5f;
 
     public bool Moving { get; private set; }
     public Vector3 EndPoint { get; private set; }
@@ -26,7 +27,7 @@ public class LegStepper : MonoBehaviour
         //Move();
     }
 
-    public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround)
+    public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround, float stepHeight)
     {
         this.homeTransform = homeTransform;
         this.wantStepAtDistance = wantStepAtDistance;
@@ -34,6 +35,7 @@ public class LegStepper : MonoBehaviour
         this.stepOvershootFraction = stepOvershootFraction;
         this.groundRaycastMask = groundRaycastMask;
         this.heightOverGround = heightOverGround;
+        this.stepHeight = stepHeight;
     }
 
     public void Move()
@@ -66,7 +68,7 @@ public class LegStepper : MonoBehaviour
         Vector3 startPoint = transform.position;
 
         Vector3 centerPoint = (startPoint + endPoint) / 2;
-        centerPoint += homeTransform.up * Vector3.Distance(startPoint, endPoint) / 2;
+        centerPoint += homeTransform.up * Vector3.Distance(startPoint, endPoint) * stepHeight;
 
         float timeElapsed = 0;
 
