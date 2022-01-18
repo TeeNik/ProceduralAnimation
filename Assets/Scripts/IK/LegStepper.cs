@@ -13,6 +13,9 @@ public class LegStepper : MonoBehaviour
     [SerializeField] float heightOverGround = 0.0f;
     [SerializeField] float stepHeight = 0.5f;
 
+    [SerializeField] float wantStepAtAngle = 135f;
+    [SerializeField] bool overshootFromHome = false;
+
     public bool Moving { get; private set; }
     public Vector3 EndPoint { get; private set; }
 
@@ -22,12 +25,7 @@ public class LegStepper : MonoBehaviour
         EndPoint = transform.position;
     }
 
-    private void Update()
-    {
-        //Move();
-    }
-
-    public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround, float stepHeight)
+    public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround, float stepHeight, bool overshootFromHome)
     {
         this.homeTransform = homeTransform;
         this.wantStepAtDistance = wantStepAtDistance;
@@ -36,17 +34,19 @@ public class LegStepper : MonoBehaviour
         this.groundRaycastMask = groundRaycastMask;
         this.heightOverGround = heightOverGround;
         this.stepHeight = stepHeight;
+        this.overshootFromHome = overshootFromHome;
     }
 
     public void Move()
     {
         if (!Moving)
         {
-            Vector3 pos = Vector3.ProjectOnPlane(transform.position, transform.up);
-            Vector3 homePos = Vector3.ProjectOnPlane(homeTransform.position, transform.up);
-            Vector3 dir = pos - homePos;
+            Vector3 pos = Vector3.ProjectOnPlane(transform.position, homeTransform.up);
+            Vector3 homePos = Vector3.ProjectOnPlane(homeTransform.position, homeTransform.up);
+            float sqrDist = Vector3.SqrMagnitude(pos - homePos);
+            float angleFromHome = Quaternion.Angle(transform.rotation, homeTransform.rotation);
 
-            if (dir.magnitude > wantStepAtDistance)
+            if (sqrDist > wantStepAtDistance * wantStepAtDistance || angleFromHome > wantStepAtAngle)
             {
                 Vector3 endPos;
                 Vector3 endNormal;
@@ -93,9 +93,18 @@ public class LegStepper : MonoBehaviour
 
     bool GetGroundedEndPosition(out Vector3 position, out Vector3 normal)
     {
-        Vector3 towardHome = (homeTransform.position - transform.position).normalized;
+        Vector3 homeDir;
+        if(overshootFromHome)
+        {
+            homeDir = homeTransform.forward;
+        } 
+        else
+        {
+            homeDir = (homeTransform.position - transform.position).normalized;
+        }
+
         float overshootDistance = wantStepAtDistance * stepOvershootFraction;
-        Vector3 overshootVector = towardHome * overshootDistance;
+        Vector3 overshootVector = homeDir * overshootDistance;
 
         Vector3 raycastOrigin = homeTransform.position + overshootVector + homeTransform.up * 5f;
 
