@@ -15,12 +15,9 @@ public class Watcher : Pawn
     [SerializeField] private Transform Spotlight;
 
     [Header("AI")]
-    WatcherAIController AI;
+    [SerializeField] private WatcherAIController AI;
 
-    private void Start()
-    {
-        PlaySpotlightAnimation(null);
-    }
+    private Tween ScanningTween;
 
     private void Update()
     {
@@ -29,7 +26,12 @@ public class Watcher : Pawn
 
     protected override void InternalOnControlChanged(bool IsUnderPlayerControl)
     {
-        if(AI)
+        if(ScanningTween != null && ScanningTween.active)
+        {
+            ScanningTween.Kill();
+            Spotlight.gameObject.SetActive(false);
+        }
+        else if(AI)
         {
             AI.OnControlChanged(IsUnderPlayerControl);
         }
@@ -65,7 +67,7 @@ public class Watcher : Pawn
         const int numOfLoops = 10;
 
         float value = 0.0f;
-        DOTween.To(() => value, x => { 
+        ScanningTween = DOTween.To(() => value, x => { 
             value = x;
             Vector3 lean = new Vector3(15.0f * Mathf.Sin(x), Body.transform.eulerAngles.y, Body.transform.eulerAngles.z);
             Spotlight.rotation = Quaternion.RotateTowards(Spotlight.rotation, Quaternion.Euler(lean), 1.0f);
@@ -76,5 +78,4 @@ public class Watcher : Pawn
             onAnimFinished?.Invoke();
         });
     }
-
 }
