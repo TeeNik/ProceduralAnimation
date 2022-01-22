@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Utils
@@ -23,5 +24,21 @@ public static class Utils
             }
         }
         return true;
+    }
+
+    public static List<Transform> FindDeepChildren(Transform parent, string name)
+    {
+        List<Transform> result = new List<Transform>();
+        Queue<Transform> queue = new Queue<Transform>();
+        queue.Enqueue(parent);
+        while (queue.Count > 0)
+        {
+            var c = queue.Dequeue();
+            if (c.name == name)
+                result.Add(c);
+            foreach (Transform t in c)
+                queue.Enqueue(t);
+        }
+        return result;
     }
 }
