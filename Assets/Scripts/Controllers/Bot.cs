@@ -28,34 +28,32 @@ public class Bot : Pawn
     private Tween IdleTween;
     private float TurnSmoothVelocity;
 
-    void Start()
-    {
-        StartCoroutine(AdjustBodyTransform());
-    }
 
-    void Update()
+    [SerializeField] private Transform Bottom;
+    [SerializeField] private Rigidbody Rigidbody;
+    [SerializeField] private float UpForce = 0.2f;
+    [SerializeField] private float MoveForce = 0.2f;
+
+    private void FixedUpdate()
     {
         ProcessInput();
+
+        Vector3 gravity = Vector3.up * -9.81f * 2.0f * Rigidbody.mass;
+        Vector3 upForce = Vector3.zero;
+
+        RaycastHit hit;
+        if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
+        {
+            float height = Vector3.Distance(hit.point, Bottom.position);
+            float force = 1.0f - Mathf.InverseLerp(0.0f, BodyHeightBase, height);
+            upForce = Body.up * force * UpForce;
+        }
+        Rigidbody.AddForce(gravity + upForce);
     }
 
     public void SetSwitchProgress(float value)
     {
         UpdateHighlightMaterials(value);
-    }
-
-    private IEnumerator AdjustBodyTransform()
-    {
-        while (true)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
-            {
-                Vector3 bodyPos = hit.point + Vector3.up * BodyHeightBase;
-                Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
-            }
-
-            yield return new WaitForFixedUpdate();
-        }
     }
 
     protected override void InternalProcessInput()
@@ -73,6 +71,7 @@ public class Bot : Pawn
 
             Vector3 moveDir = Body.forward * vertical + Body.right * horizontal;
             Body.position = Vector3.MoveTowards(Body.position, Body.position + moveDir.normalized, MovementSpeed * Time.deltaTime);
+            Rigidbody.AddForce(moveDir.normalized * MoveForce);
         }
 
         Vector3 lean = new Vector3(15.0f * vertical, targetAngle, -15.0f * horizontal);
