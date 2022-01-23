@@ -18,12 +18,16 @@ public class CentipedeBodyPart : MonoBehaviour
     [SerializeField] LegStepper LeftLegStepper;
     [SerializeField] LegStepper RightLegStepper;
 
+    private Transform[] BoneRoots;
+
     public void Init(CentipedeBodyPart leader, CentipedeBodyPart follower, LegStepper rightLegStepper, LegStepper leftLegStepper)
     {
         Leader = leader;
         Follower = follower;
         RightLegStepper = rightLegStepper;
         LeftLegStepper = leftLegStepper;
+
+        BoneRoots = Utils.FindDeepChildren(transform, "Bone").ToArray();
     }
 
     private void Awake()
@@ -78,6 +82,11 @@ public class CentipedeBodyPart : MonoBehaviour
                     Vector3 position = transform.position + transform.up * (BodyHeightBase - heightDiff);
                     transform.position = Vector3.Lerp(transform.position, position, 0.05f);
                 }
+            }
+
+            foreach(var bone in BoneRoots)
+            {
+                bone.localPosition = Vector3.zero;
             }
         }
     }
