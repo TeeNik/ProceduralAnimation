@@ -25,27 +25,24 @@ public class AIController : MonoBehaviour
 
     public Transform GetTargetForWatcher(Transform prevTarget)
     {
-        while(true)
+        if(PointsOfInterest.Count > 1)
         {
-            Transform target = PointsOfInterest[Random.Range(0, PointsOfInterest.Count)];
-            if(target != prevTarget)
+            int i = 0;
+            while (i < 100)
             {
-                return target;
+                ++i;
+                Transform target = PointsOfInterest[Random.Range(0, PointsOfInterest.Count)];
+                if (target != prevTarget)
+                {
+                    return target;
+                }
             }
         }
+        return null;
     }
 
     public Transform GetTargetForCentipede(Transform prevTarget)
     {
-        //while (true)
-        //{
-        //    Transform target = CentipedePathPoints[Random.Range(0, CentipedePathPoints.Count)];
-        //    if (target != prevTarget)
-        //    {
-        //        return target;
-        //    }
-        //}
-
         int index = CentipedePathPoints.IndexOf(prevTarget);
         ++index;
         if(index >= CentipedePathPoints.Count)
