@@ -7,14 +7,13 @@ public class PawnController : MonoBehaviour
     [SerializeField] private CinemachineFreeLook CinemachineCamera;
     [SerializeField] private Camera Camera;
     [SerializeField] private float Radius = 10.0f;
+    [SerializeField] private const float SwitchTime = 1.5f;
     [SerializeField] private Pawn[] Pawns;
 
     private Pawn CurrentPawn = null;
     private Pawn SwitchTarget = null;
     private bool IsSwitching = false;
     private float CurrentSwitchTime = 0.0f; 
-    private const float SwitchTime = 3.0f;
-
 
     private void Start()
     {
@@ -23,15 +22,12 @@ public class PawnController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             if(CurrentPawn is Bot && SwitchTarget != null)
             {
                 IsSwitching = true;
             }
-        }
-        else if(Input.GetMouseButtonUp(1))
-        {
             if (!(CurrentPawn is Bot))
             {
                 TakeControl(Bot);
@@ -64,7 +60,7 @@ public class PawnController : MonoBehaviour
 
     private void HighlightSwitchTarget()
     {
-        if (CurrentPawn is Bot)
+        if (CurrentPawn is Bot && !IsSwitching)
         {
             Pawn closest = FindClosestVisiblePawnsInRadius(CurrentPawn, Radius);
             if (closest != null)
