@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class WatcherAIController : AIMovement
 {
+
+    [SerializeField] private Transform FirstTarget;
+
     private Watcher Owner;
 
     private void Start()
     {
         Owner = GetComponentInParent<Watcher>();
         OnDestinationReached = OnDestinationReachedCallback;
-        ChooseNextTarget();
+
+        if(FirstTarget != null)
+        {
+            StartMovement(FirstTarget);
+        }
+        else
+        {
+            ChooseNextTarget();
+        }
     }
 
     private void OnDestinationReachedCallback()
@@ -37,6 +48,7 @@ public class WatcherAIController : AIMovement
         }
     }
 
+    /*
     private void OnDrawGizmos()
     {
         var nav = Agent;
@@ -61,4 +73,5 @@ public class WatcherAIController : AIMovement
             line.SetPosition(i, path.corners[i]);
         }
     }
+    */
 }
