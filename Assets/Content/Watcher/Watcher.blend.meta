@@ -3,7 +3,22 @@ guid: a921be05214eb1c48912c1b414b19b77
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Spider_Additional_M.001
+    second: {fileID: 2100000, guid: 5b65f3047b56e43478a03826907409e7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Spider_Base_M.001
+    second: {fileID: 2100000, guid: 1e2574b0efd16fa4687d64c8e9ff8b37, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Spider_Glass_M.001
+    second: {fileID: 2100000, guid: 69fd349489f2fbe45a8913e69b61ee7e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -161,8 +161,8 @@ MonoBehaviour:
   CameraPoint: {fileID: 2092188617123437505}
   RippleFX: {fileID: 2092188615536872273}
   Body: {fileID: 1930860685404644189}
-  MovementSpeed: 4
-  RotationSpeed: 100
+  MovementSpeed: 3
+  RotationSpeed: 60
   Spotlight: {fileID: 3972018788112428045}
   AI: {fileID: 2638976049586153477}
 --- !u!1 &1930860685133353282
@@ -531,14 +531,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeTransform: {fileID: 2092188617277158141}
-  wantStepAtDistance: 1
-  moveDuration: 0.2
-  stepOvershootFraction: 0.6
+  wantStepAtDistance: 0.8
+  moveDuration: 0.25
+  stepOvershootFraction: 0.9
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
   heightOverGround: 0
-  stepHeight: 1
+  stepHeight: 1.5
   wantStepAtAngle: 135
   overshootFromHome: 0
 --- !u!1 &1930860686198784760
@@ -585,14 +585,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeTransform: {fileID: 2092188616399119966}
-  wantStepAtDistance: 1
-  moveDuration: 0.2
-  stepOvershootFraction: 0.6
+  wantStepAtDistance: 0.8
+  moveDuration: 0.25
+  stepOvershootFraction: 0.9
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
   heightOverGround: 0
-  stepHeight: 1
+  stepHeight: 1.5
   wantStepAtAngle: 135
   overshootFromHome: 0
 --- !u!1 &1930860686301630966
@@ -639,14 +639,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeTransform: {fileID: 1930860686495732740}
-  wantStepAtDistance: 1
-  moveDuration: 0.2
-  stepOvershootFraction: 0.6
+  wantStepAtDistance: 0.8
+  moveDuration: 0.25
+  stepOvershootFraction: 0.9
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
   heightOverGround: 0
-  stepHeight: 1
+  stepHeight: 1.5
   wantStepAtAngle: 135
   overshootFromHome: 0
 --- !u!1 &1930860686476960809
@@ -693,14 +693,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeTransform: {fileID: 2092188616384717270}
-  wantStepAtDistance: 1
-  moveDuration: 0.2
-  stepOvershootFraction: 0.6
+  wantStepAtDistance: 0.8
+  moveDuration: 0.25
+  stepOvershootFraction: 0.9
   groundRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
   heightOverGround: 0
-  stepHeight: 1
+  stepHeight: 1.5
   wantStepAtAngle: 135
   overshootFromHome: 0
 --- !u!1 &1930860686495732741
@@ -7033,7 +7033,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.3
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 60

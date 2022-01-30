@@ -212,10 +212,10 @@ MonoBehaviour:
   IsUnderControl: 0
   CameraPoint: {fileID: 4479519442151845458}
   RippleFX: {fileID: 1121256815718427771}
-  Model: {fileID: 4479519441727603810}
   Body: {fileID: 4152541300430430593}
+  Model: {fileID: 4479519441727603810}
   MovementSpeed: 20
-  BodyHeightBase: 4
+  BodyHeightBase: 1.25
   BodyAdjustSpeed: 0.25
   BodyAdjustRotationSpeed: 50
   Camera: {fileID: 0}
@@ -225,6 +225,10 @@ MonoBehaviour:
   NumberOfSlots: 6
   BatteryRenderer: {fileID: 433688178540751622}
   EyeRenderer: {fileID: 7445642077283802384}
+  Bottom: {fileID: 0}
+  Rigidbody: {fileID: 0}
+  UpForce: 0.2
+  MoveForce: 0.2
 --- !u!1 &4064793607402809671
 GameObject:
   m_ObjectHideFlags: 0
