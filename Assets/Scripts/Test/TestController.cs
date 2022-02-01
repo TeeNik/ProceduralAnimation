@@ -16,137 +16,117 @@ public class TestController : MonoBehaviour
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
-    private float rot = 0.0f;
 
+    private int RayIndex = 0;
 
-    private bool disableControl = false;
-    private Vector3 movePos;
-    private Quaternion moveQuat;
-    private Vector3 moveUp;
 
     void Awake()
     {
-        StartCoroutine(LegUpdateCoroutine());
+        //StartCoroutine(LegUpdateCoroutine());
         StartCoroutine(AdjustBodyTransform());
     }
 
     void Update()
     {
-        const float dist = 1.0f;
-        Vector3 upDebug = Body.position + Body.up * dist;
-        Debug.DrawLine(Body.position, upDebug);
-        Vector3 forDebug = upDebug + Body.forward * dist;
-        Debug.DrawLine(upDebug, forDebug, Color.green);
+        //const float dist = 1.0f;
+        //Vector3 upDebug = Body.position + Body.up * dist;
+        //Debug.DrawLine(Body.position, upDebug);
+        //Vector3 forDebug = upDebug + Body.forward * dist;
+        //Debug.DrawLine(upDebug, forDebug, Color.green);
+        //
+        //Vector3 forShortDebug = upDebug + Body.forward * dist * 0.25f;
+        //Vector3 downDebug = forShortDebug + Body.up * dist * -3.0f;
+        //Debug.DrawLine(forShortDebug, downDebug, Color.blue);
+        //Vector3 downBackDebug = downDebug + Body.forward * -dist;
+        //Debug.DrawLine(downDebug, downBackDebug, Color.red);
 
-        Vector3 forShortDebug = upDebug + Body.forward * dist * 0.25f;
-        Vector3 downDebug = forShortDebug + Body.up * dist * -3.0f;
-        Debug.DrawLine(forShortDebug, downDebug, Color.blue);
-        Vector3 downBackDebug = downDebug + Body.forward * -dist;
-        Debug.DrawLine(downDebug, downBackDebug, Color.red);
-
-        if (!disableControl)
+        CheckObstacle();
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.forward * 10, MovementSpeed * Time.deltaTime);
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                Body.position = Vector3.MoveTowards(Body.position, Body.position - Body.forward * 10, MovementSpeed * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                //Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
-                rot = -RotationSpeed * Time.deltaTime;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                //Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
-                rot = RotationSpeed * Time.deltaTime;
-            }
+            ++RayIndex;
+        }
 
-            RaycastHit hit;
-            if (Physics.Raycast(upDebug, Body.forward, out hit, dist))
-            {
-                movePos = hit.point + hit.normal * 0.5f;
-
-                Vector3 forward = Vector3.Cross(-hit.normal, Body.right);
-                moveQuat = Quaternion.LookRotation(forward, hit.normal);
-
-                moveUp = hit.normal;
-                disableControl = true;
-            } 
-            else if (Physics.Raycast(forShortDebug, -Body.up, out hit, 3.0f * dist))
-            {
-                Debug.Log(hit.collider.gameObject);
-            }
-            else if (Physics.Raycast(downDebug, -Body.forward, out hit, dist))
-            {
-                movePos = hit.point + hit.normal * 0.5f;
-
-                Vector3 forward = Vector3.Cross(-hit.normal, Body.right);
-                moveQuat = Quaternion.LookRotation(forward, hit.normal);
-
-                moveUp = hit.normal;
-                disableControl = true;
-            }
+        if (Input.GetKey(KeyCode.W))
+        {
+            Body.position = Vector3.MoveTowards(Body.position, Body.position + Body.forward * 10, MovementSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            Body.position = Vector3.MoveTowards(Body.position, Body.position - Body.forward * 10, MovementSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            Body.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            Body.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
         }
     }
 
-    IEnumerator LegUpdateCoroutine()
-    {
-        while (true)
-        {
-            legStepper.Move();
-            yield return null;
-        }
-    }
+    //IEnumerator LegUpdateCoroutine()
+    //{
+    //    while (true)
+    //    {
+    //        legStepper.Move();
+    //        yield return null;
+    //    }
+    //}
 
     private IEnumerator AdjustBodyTransform()
     {
         while (true)
         {
-            if(!disableControl)
-            {
-                Vector3 tipCenter = Vector3.zero;
-                Vector3 bodyUp = Vector3.zero;
-
-                RaycastHit hit;
-                if (Physics.Raycast(Body.position, Body.up * -1, out hit, 10.0f))
-                {
-                    bodyUp += hit.normal;
-                }
-
-                bodyUp.Normalize();
-
-                Vector3 bodyPos = hit.point + bodyUp * BodyHeightBase;
-                Body.position = Vector3.Lerp(Body.position, bodyPos, BodyAdjustSpeed);
-
-                Vector3 forward = Body.transform.forward;
-                if (Mathf.Abs(rot) > 0.0001f)
-                {
-                    forward = Quaternion.AngleAxis(rot * 100, transform.up) * forward;
-                    rot = 0.0f;
-                }
-
-                var look = Quaternion.LookRotation(forward, transform.up);
-                Body.rotation = Quaternion.Slerp(Body.rotation, look, BodyAdjustRotationSpeed);
-            }
-            else
-            {
-                Body.position = Vector3.Lerp(Body.position, movePos, BodyAdjustSpeed);
-                //Body.up = Vector3.Lerp(Body.up, moveUp, BodyAdjustSpeed);
-                Body.rotation = Quaternion.Slerp(Body.rotation, moveQuat, BodyAdjustRotationSpeed);
-
-                if ((Body.position - movePos).magnitude < 0.01f)
-                {
-                    disableControl = false;
-                }
-            }
-
-
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    private Vector3 HitPos =Vector3.zero;
+
+    private void CheckObstacle()
+    {
+        //Vector3 up = Body.up;
+        //up = Quaternion.AngleAxis(15.0f * RayIndex, Body.right) * up;
+        //Vector3 upPos = Body.position + up * 5.0f;
+        //Vector3 forward = Quaternion.AngleAxis(15.0f * RayIndex, Body.right) * Body.forward;
+        //Vector3 forPos = upPos + forward * 2.0f;
+        //
+        //Debug.DrawLine(Body.position, upPos);
+        //Debug.DrawLine(upPos, forPos);
+
+
+
+        const float height = 2.0f;
+        const float forwardDist = 1.0f;
+        const float angle = 270.0f;
+        const float step = 15.0f;
+
+        for(int i = 0; i <= angle / step; ++i)
+        {
+            Vector3 up = Quaternion.AngleAxis(step * i, Body.right) * Body.up;
+            Vector3 upPos = Body.position + up * height;
+            Vector3 forward = Quaternion.AngleAxis(step * i, Body.right) * Body.forward;
+            Vector3 forPos = upPos + forward * forwardDist;
+
+            Debug.DrawLine(Body.position, upPos);
+            Debug.DrawLine(upPos, forPos);
+
+
+            RaycastHit hit;
+            LayerMask groundRaycastMask = ~0;
+            if (Physics.Linecast(upPos, forPos, out hit, groundRaycastMask))
+            {
+                HitPos = hit.point;
+                break;
+            }
+        }
+
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(HitPos, 0.2f);
     }
 
 }
