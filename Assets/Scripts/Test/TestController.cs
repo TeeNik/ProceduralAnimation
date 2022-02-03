@@ -16,8 +16,6 @@ public class TestController : MonoBehaviour
     public float BodyAdjustSpeed = 0.05f;
     public float BodyAdjustRotationSpeed = 0.05f;
 
-
-    private int RayIndex = 0;
     private Vector3 MoveTarget = Vector3.zero;
     private Quaternion RotationTarget = Quaternion.identity;
 
@@ -29,23 +27,7 @@ public class TestController : MonoBehaviour
 
     void Update()
     {
-        //const float dist = 1.0f;
-        //Vector3 upDebug = Body.position + Body.up * dist;
-        //Debug.DrawLine(Body.position, upDebug);
-        //Vector3 forDebug = upDebug + Body.forward * dist;
-        //Debug.DrawLine(upDebug, forDebug, Color.green);
-        //
-        //Vector3 forShortDebug = upDebug + Body.forward * dist * 0.25f;
-        //Vector3 downDebug = forShortDebug + Body.up * dist * -3.0f;
-        //Debug.DrawLine(forShortDebug, downDebug, Color.blue);
-        //Vector3 downBackDebug = downDebug + Body.forward * -dist;
-        //Debug.DrawLine(downDebug, downBackDebug, Color.red);
-
         CheckObstacle();
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ++RayIndex;
-        }
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -96,15 +78,6 @@ public class TestController : MonoBehaviour
 
     private void CheckObstacle()
     {
-        //Vector3 up = Body.up;
-        //up = Quaternion.AngleAxis(15.0f * RayIndex, Body.right) * up;
-        //Vector3 upPos = Body.position + up * 5.0f;
-        //Vector3 forward = Quaternion.AngleAxis(15.0f * RayIndex, Body.right) * Body.forward;
-        //Vector3 forPos = upPos + forward * 2.0f;
-        //
-        //Debug.DrawLine(Body.position, upPos);
-        //Debug.DrawLine(upPos, forPos);
-
         const float angle = 270.0f;
         const float step = 15.0f;
 
