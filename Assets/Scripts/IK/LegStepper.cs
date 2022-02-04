@@ -13,7 +13,7 @@ public class LegStepper : MonoBehaviour
     [SerializeField] float heightOverGround = 0.0f;
     [SerializeField] float stepHeight = 0.5f;
 
-    [SerializeField] float wantStepAtAngle = 135f;
+    [SerializeField] float wantStepAtAngle = 45.0f;
     [SerializeField] bool overshootFromHome = false;
 
     public bool Moving { get; private set; }
@@ -25,7 +25,7 @@ public class LegStepper : MonoBehaviour
         EndPoint = transform.position;
     }
 
-    public void Setup(Transform homeTransform, float wantStepAtDistance, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround, float stepHeight, bool overshootFromHome)
+    public void Setup(Transform homeTransform, float wantStepAtDistance, float wantStepAtAngle, float moveDuration, float stepOvershootFraction, LayerMask groundRaycastMask, float heightOverGround, float stepHeight, bool overshootFromHome)
     {
         this.homeTransform = homeTransform;
         this.wantStepAtDistance = wantStepAtDistance;
@@ -35,6 +35,7 @@ public class LegStepper : MonoBehaviour
         this.heightOverGround = heightOverGround;
         this.stepHeight = stepHeight;
         this.overshootFromHome = overshootFromHome;
+        this.wantStepAtAngle = wantStepAtAngle;
     }
 
     public void Move()
