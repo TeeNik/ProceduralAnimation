@@ -1,4 +1,4 @@
-# ProceduralAnimation
+# Procedural animations
 
 Procedurally animated robots using Fabrik algorithm.
 https://www.youtube.com/watch?v=dXQr_hOPHjg
